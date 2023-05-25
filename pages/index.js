@@ -2,14 +2,31 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import { Box, Button, Divider, Flex, Heading, Input, InputGroup, InputLeftElement, Menu, MenuButton, MenuItem, MenuList, calc } from '@chakra-ui/react'
+import { Box, Button, Divider, Flex, Heading, Input, InputGroup, InputLeftElement, Menu, MenuButton, MenuItem, MenuList, Text, calc } from '@chakra-ui/react'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Home/Hero'
 import OptionCards from '@/components/Home/OptionCards'
-
+import CollectionCards from '@/components/Home/CollectionCards'
+import LocalityCards from '@/components/Home/LocalityCards'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const options = [
+    {
+      title: "Order Online",
+      subTitle: 'Stay home and order to your doorstep',
+      imgURL: "https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/order-online.webp?alt=media&token=c452919b-f46f-4533-87d2-a07f814c3ecf"
+    },
+    {
+      title: "Dining",
+      subTitle: "View the city's favourite dining venues",
+      imgURL: "https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/dining.webp?alt=media&token=4c7eb12d-20f4-4467-bbce-6cedfde9ec76"
+    },
+    {
+      title: "Nightlife and Clubs",
+      subTitle: "Explore the city's top nightlife outlets",
+      imgURL: "https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/night-life%26clubs.webp?alt=media&token=dc5cbe65-7d56-4d74-b111-fc0b15d9e8f0"
+    }]
   return (
     <>
       <Head>
@@ -22,14 +39,46 @@ export default function Home() {
         <Navbar />
         <Hero />
       </Box>
-      <Flex w={{
-        base: "100%",
-        lg: "70%"
-      }} h={'250px'} m={'auto'} mt={'10px'} justifyContent={'space-between'} alignItems={'center'} flexWrap={"wrap"}>
-        <OptionCards />
-        <OptionCards />
-        <OptionCards />
+
+      {/* options */}
+      <Flex w={{ base: "100%", lg: "70%" }} h={{ base: 'auto', lg: '250px' }} m={'auto'} mt={'10px'} justifyContent={'space-between'} alignItems={'center'} flexWrap={"wrap"}>
+        {options.map((opt) => {
+          return <OptionCards key={opt.title} {...opt} />
+        })}
       </Flex>
+
+      {/* collections */}
+      <Box w={{ base: "100%", lg: "70%" }} m={'auto'} mt={'20px'}>
+        <Heading fontSize={{ base: "2xl", md: "3xl" }} m={{ base: 'auto', lg: "0" }} w={'fit-content'} fontWeight={500}>
+          Collections
+        </Heading>
+        <Text color={"gray.500"}>
+          Explore curated lists of top restaurants, cafes, pubs, and bars in Nagpur, based on trends
+        </Text>
+        <Flex w={'100%'} justifyContent={'space-between'} alignItems={'center'} flexWrap={"wrap"} gap={'10px'} mt={'20px'} >
+          <CollectionCards />
+          <CollectionCards />
+          <CollectionCards />
+          <CollectionCards />
+        </Flex>
+      </Box>
+
+      {/* localities */}
+      <Box w={{ base: "100%", lg: "70%" }} m={'auto'} mt={'20px'}>
+        <Heading fontSize={{ base: "2xl", md: "3xl" }} m={{ base: 'auto', lg: "0" }} w={'fit-content'} fontWeight={500}>
+          Popular localities in and around
+        </Heading>
+        <Flex w={'100%'} justifyContent={'space-between'} alignItems={'center'} flexWrap={"wrap"} gap={'10px'} mt={'20px'} >
+          <LocalityCards />
+          <LocalityCards />
+          <LocalityCards />
+          <LocalityCards />
+          <LocalityCards />
+          <LocalityCards />
+          <LocalityCards />
+        </Flex>
+      </Box>
+
     </>
   )
 }

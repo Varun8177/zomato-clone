@@ -2,7 +2,7 @@ import { Box, Heading, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import React from "react";
 
-const OptionCards = () => {
+const OptionCards = ({ imgURL, title, subTitle }) => {
   return (
     <Box
       h={"100%"}
@@ -12,21 +12,20 @@ const OptionCards = () => {
       borderRadius={"10px"}
       border={"1px solid #e8e8e8"}
       cursor={"pointer"}
-      m={"auto"}
+      m={{
+        base: "auto",
+        lg: "0",
+      }}
+      mt={{ base: "10px", lg: "0" }}
     >
       <Box position={"relative"} h={"150px"} w={"100%"}>
-        <Image
-          src={
-            "https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/order-online.webp?alt=media&token=c452919b-f46f-4533-87d2-a07f814c3ecf"
-          }
-          alt=""
-          fill
-          style={{ objectFit: "cover" }}
-        />
+        <Image src={imgURL} alt="" fill style={{ objectFit: "cover" }} />
       </Box>
       <Box mt={"5px"} ml={"10px"}>
-        <Text as={"b"}>Order Online</Text>
-        <Text color={"gray.500"}>Stay home and order to your doorstep</Text>
+        <Text as={"b"} fontWeight={400} fontSize={"2xl"} color={"#363636"}>
+          {title}
+        </Text>
+        <Text color={"gray.500"}>{subTitle}</Text>
       </Box>
     </Box>
   );

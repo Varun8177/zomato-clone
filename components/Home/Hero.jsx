@@ -19,7 +19,6 @@ const Hero = () => {
     <Flex
       flexDir={"column"}
       h={"70%"}
-      //   border={"1px solid"}
       alignItems={"center"}
       justify={"center"}
       color={"white"}
