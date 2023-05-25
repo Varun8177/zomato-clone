@@ -5,6 +5,11 @@ import React from "react";
 const LocalityCards = () => {
   return (
     <Flex
+      cursor={"pointer"}
+      m={{
+        base: "auto",
+        lg: "0",
+      }}
       width={"320px"}
       borderWidth={1}
       mt={"20px"}
