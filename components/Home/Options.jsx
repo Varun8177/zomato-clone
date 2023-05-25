@@ -32,6 +32,7 @@ const Options = () => {
       justifyContent={"space-between"}
       alignItems={"center"}
       flexWrap={"wrap"}
+      gap={"10px"}
     >
       {options.map((opt) => {
         return <OptionCards key={opt.title} {...opt} />;

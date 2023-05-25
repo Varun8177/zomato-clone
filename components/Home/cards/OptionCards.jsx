@@ -7,7 +7,7 @@ const OptionCards = ({ imgURL, title, subTitle }) => {
     <Box
       h={"100%"}
       w={"30%"}
-      minW={"200px"}
+      minW={"220px"}
       overflow={"hidden"}
       borderRadius={"10px"}
       border={"1px solid #e8e8e8"}

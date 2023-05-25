@@ -28,8 +28,9 @@ const Hero = () => {
         fontWeight={"200"}
         mt={"2%"}
         fontSize={{
-          base: "xl",
-          md: "2xl",
+          base: "md",
+          sm: "lg",
+          lg: "2xl",
         }}
       >
         Discover the best food & drinks in Nagpur

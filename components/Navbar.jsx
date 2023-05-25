@@ -1,6 +1,8 @@
 import { Box, Flex, Show, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import React from "react";
+import LoginModal from "./Navbar/LoginModal";
+import SignupModal from "./Navbar/SignupModal";
 
 const Navbar = () => {
   return (
@@ -28,8 +30,8 @@ const Navbar = () => {
           >
             <Text cursor={"pointer"}>Investor Relations</Text>
             <Text cursor={"pointer"}>Add Restraunts</Text>
-            <Text cursor={"pointer"}>Login</Text>
-            <Text cursor={"pointer"}>Signup</Text>
+            <LoginModal />
+            <SignupModal />
           </Flex>
         </Show>
       </Flex>
