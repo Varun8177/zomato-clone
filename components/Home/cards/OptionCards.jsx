@@ -1,8 +1,10 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React from "react";
 
-const OptionCards = ({ imgURL, title, subTitle }) => {
+const OptionCards = ({ imgURL, title, subTitle, path }) => {
+  const router = useRouter();
   return (
     <Box
       h={"100%"}
@@ -17,6 +19,9 @@ const OptionCards = ({ imgURL, title, subTitle }) => {
         lg: "0",
       }}
       mt={{ base: "10px", lg: "0" }}
+      onClick={() => {
+        router.push(path);
+      }}
     >
       <Box position={"relative"} h={"150px"} w={"100%"}>
         <Image src={imgURL} alt="" fill style={{ objectFit: "cover" }} />

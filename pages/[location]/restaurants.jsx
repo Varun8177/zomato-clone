@@ -1,4 +1,7 @@
+import Products from "@/components/Delivery/Products";
 import Sections from "@/components/Delivery/Sections";
+import DineOutTab from "@/components/Dine-out/cards/DineOutTab";
+import Collections from "@/components/Home/Collections";
 import DeleveryNavbar from "@/components/Navbar/DeleveryNavbar";
 import {
   Box,
@@ -15,7 +18,7 @@ const Restaurants = () => {
       <Flex
         w={{
           base: "90%",
-          lg: "80%",
+          lg: "70%",
         }}
         alignItems={"center"}
         justifyContent={"space-between"}
@@ -38,6 +41,11 @@ const Restaurants = () => {
         </Breadcrumb>
       </Flex>
       <Sections index={2} />
+      <Box bgColor={"#f8f8f8"} pt={5} pb={5}>
+        <Collections />
+      </Box>
+      <DineOutTab />
+      <Products title={"Nightlife Restaurants in Nagpur"} />
     </Box>
   );
 };

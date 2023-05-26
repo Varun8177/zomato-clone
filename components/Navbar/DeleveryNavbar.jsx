@@ -21,6 +21,7 @@ import Image from "next/image";
 import { IoMdLocate } from "react-icons/io";
 import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
+import Link from "next/link";
 
 const DeleveryNavbar = () => {
   return (
@@ -38,7 +39,9 @@ const DeleveryNavbar = () => {
           <HamburgerIcon />
         </Hide>
         <Hide below="md">
-          <Heading>zomato</Heading>
+          <Link href={"/"}>
+            <Heading>zomato</Heading>
+          </Link>
         </Hide>
         <Flex
           w={{
