@@ -58,7 +58,7 @@ const delivery = () => {
           <Slider />
         </Box>
       </Box>
-      <Products />
+      <Products title={"Delivery Restaurants in Nagpur"} />
     </Box>
   );
 };

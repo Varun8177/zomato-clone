@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import TabCards from "./cards/TabCards";
 import DeliveryTab from "./cards/DeliveryTab";
+import DineOutTab from "../Dine-out/cards/DineOutTab";
 const Sections = ({ index }) => {
   const tabDetails = [
     {
@@ -59,12 +60,8 @@ const Sections = ({ index }) => {
         <Divider />
         <TabPanels>
           <DeliveryTab />
-          <TabPanel>
-            <p>two!</p>
-          </TabPanel>
-          <TabPanel>
-            <p>three!</p>
-          </TabPanel>
+          <TabPanel></TabPanel>
+          <TabPanel></TabPanel>
         </TabPanels>
       </Tabs>
     </Flex>
