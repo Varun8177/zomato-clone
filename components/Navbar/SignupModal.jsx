@@ -5,8 +5,6 @@ import {
   Divider,
   Flex,
   Input,
-  InputGroup,
-  InputLeftAddon,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -16,6 +14,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { FcGoogle } from "react-icons/fc";
 
 const SignupModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -61,6 +60,7 @@ const SignupModal = () => {
               bgColor={"white"}
               _hover={{ bgColor: "white" }}
               borderWidth={1}
+              leftIcon={<FcGoogle />}
             >
               Continue with Google
             </Button>

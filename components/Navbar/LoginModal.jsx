@@ -15,6 +15,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React from "react";
+import { FcGoogle } from "react-icons/fc";
+import { MdEmail } from "react-icons/md";
 
 const LoginModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -56,6 +58,7 @@ const LoginModal = () => {
               bgColor={"white"}
               _hover={{ bgColor: "white" }}
               borderWidth={1}
+              leftIcon={<MdEmail />}
             >
               Continue with Email
             </Button>
@@ -66,6 +69,7 @@ const LoginModal = () => {
               bgColor={"white"}
               _hover={{ bgColor: "white" }}
               borderWidth={1}
+              leftIcon={<FcGoogle />}
             >
               Continue with Google
             </Button>

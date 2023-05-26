@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Box,
   Button,
   Flex,
   Heading,
@@ -13,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
+import { IoMdLocate } from "react-icons/io";
 
 const Hero = () => {
   return (
@@ -54,28 +56,49 @@ const Hero = () => {
             borderRightRadius={"0"}
             _hover={{ bgColor: "white" }}
             _focus={{ bgColor: "white" }}
+            _active={{ bgColor: "white" }}
             rightIcon={<ChevronDownIcon />}
           >
-            Your Location
+            <Flex alignItems={"center"} gap={"10px"}>
+              <IoMdLocate />
+              Location
+            </Flex>
           </MenuButton>
           <MenuList bgColor={"white"} color={"black"} mt={"7px"}>
             <MenuItem minH="48px">
-              <Image
-                src="https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/zomato-banner.webp?alt=media&token=9fe4834f-bc76-4a0a-97f2-83a210d2d4f6"
-                alt="Fluffybuns the destroyer"
-                width={50}
-                height={50}
-                style={{ borderRadius: "50%", objectFit: "cover" }}
-              />
+              <Box
+                position={"relative"}
+                w={"30px"}
+                h={"30px"}
+                borderRadius={"50%"}
+                objectFit={"cover"}
+                border={"1px solid"}
+                overflow={"hidden"}
+              >
+                <Image
+                  src="https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/zomato-banner.webp?alt=media&token=9fe4834f-bc76-4a0a-97f2-83a210d2d4f6"
+                  alt="Fluffybuns the destroyer"
+                  fill
+                />
+              </Box>
               <span>Fluffybuns the Destroyer</span>
             </MenuItem>
             <MenuItem minH="40px">
-              <Image
-                src="https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/zomato-banner.webp?alt=media&token=9fe4834f-bc76-4a0a-97f2-83a210d2d4f6"
-                alt="Simon the pensive"
-                width={50}
-                height={50}
-              />
+              <Box
+                position={"relative"}
+                w={"30px"}
+                h={"30px"}
+                borderRadius={"50%"}
+                objectFit={"cover"}
+                border={"1px solid"}
+                overflow={"hidden"}
+              >
+                <Image
+                  src="https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/zomato-banner.webp?alt=media&token=9fe4834f-bc76-4a0a-97f2-83a210d2d4f6"
+                  alt="Fluffybuns the destroyer"
+                  fill
+                />
+              </Box>
               <span>Simon the pensive</span>
             </MenuItem>
           </MenuList>
