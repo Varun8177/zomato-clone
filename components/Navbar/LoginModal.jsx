@@ -32,7 +32,7 @@ const LoginModal = () => {
           <ModalCloseButton _hover={{ bgColor: "white" }} />
           <ModalBody>
             <InputGroup>
-              <InputLeftAddon children="+91" />
+              <InputLeftAddon>+91</InputLeftAddon>
               <Input type="tel" placeholder="phone number" />
             </InputGroup>
             <Button

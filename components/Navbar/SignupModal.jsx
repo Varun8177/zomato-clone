@@ -30,7 +30,7 @@ const SignupModal = () => {
         <ModalOverlay bg="blackAlpha.900" />
         <ModalContent alignItems={"center"}>
           <ModalHeader>Sign up</ModalHeader>
-          <ModalCloseButton _hover={{ bgColor: "white" }} />
+          <ModalCloseButton _hover={{ bgColor: "white" }} border={"none"} />
           <ModalBody>
             <Input type="text" placeholder="Full Name" mb={"10px"} />
             <Input type="text" placeholder="Email" />
