@@ -1,3 +1,4 @@
+import Products from "@/components/Delivery/Products";
 import Sections from "@/components/Delivery/Sections";
 import Slider from "@/components/Delivery/slider/slider";
 import DeleveryNavbar from "@/components/Navbar/DeleveryNavbar";
@@ -57,13 +58,7 @@ const delivery = () => {
           <Slider />
         </Box>
       </Box>
-      <Box bg={"#ffff"} pt={10} mt={"10px"} pb={10}>
-        <Box w={{ base: "90%", lg: "70%" }} m={"auto"}>
-          <Heading fontWeight={"400"} fontSize={"3xl"} mb={"20px"}>
-            Delivery Restaurants in Nagpur
-          </Heading>
-        </Box>
-      </Box>
+      <Products />
     </Box>
   );
 };
