@@ -11,6 +11,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Text,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
@@ -61,7 +62,7 @@ const Hero = () => {
           >
             <Flex alignItems={"center"} gap={"10px"}>
               <IoMdLocate />
-              Location
+              <Text display={{ base: "none", sm: "block" }}>Location</Text>
             </Flex>
           </MenuButton>
           <MenuList bgColor={"white"} color={"black"} mt={"7px"}>
@@ -82,24 +83,6 @@ const Hero = () => {
                 />
               </Box>
               <span>Fluffybuns the Destroyer</span>
-            </MenuItem>
-            <MenuItem minH="40px">
-              <Box
-                position={"relative"}
-                w={"30px"}
-                h={"30px"}
-                borderRadius={"50%"}
-                objectFit={"cover"}
-                border={"1px solid"}
-                overflow={"hidden"}
-              >
-                <Image
-                  src="https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/zomato-banner.webp?alt=media&token=9fe4834f-bc76-4a0a-97f2-83a210d2d4f6"
-                  alt="Fluffybuns the destroyer"
-                  fill
-                />
-              </Box>
-              <span>Simon the pensive</span>
             </MenuItem>
           </MenuList>
         </Menu>
