@@ -1,8 +1,10 @@
 import { Box, Divider, Flex, Text } from "@chakra-ui/react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React from "react";
 
 const ProductCards = () => {
+  const router = useRouter();
   return (
     <Box
       rounded={"10px"}
@@ -11,6 +13,7 @@ const ProductCards = () => {
       _hover={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}
       p={2}
       cursor={"pointer"}
+      onClick={() => router.push("/nagpur/order/1")}
     >
       <Box
         position={"relative"}
