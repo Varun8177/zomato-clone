@@ -19,6 +19,7 @@ import { BsBookmarkPlus } from "react-icons/bs";
 import { RiShareForwardLine } from "react-icons/ri";
 import { AiFillStar } from "react-icons/ai";
 import IconText from "@/components/Order/IconText";
+import OrderTabs from "@/components/Order/OrderTabs";
 
 const Order = () => {
   return (
@@ -211,6 +212,7 @@ const Order = () => {
           </Button>
         </Flex>
       </Box>
+      <OrderTabs />
     </Box>
   );
 };
