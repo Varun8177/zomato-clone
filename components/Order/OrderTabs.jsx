@@ -19,13 +19,6 @@ import MenuPanel from "./MenuPanel";
 
 const OrderTabs = () => {
   const options = ["Overview", "Order Online", "Reviews", "Photos", "Menu"];
-  // const optionPanels = [
-  //   <OverviewPanel />,
-  //   <OnlineOrderPanel key={1} />,
-  //   <ReviewsPanel key={2} />,
-  //   <PhotosPanel key={3} />,
-  //   <MenuPanel key={4} />,
-  // ];
   return (
     <Flex
       w={{
@@ -61,16 +54,16 @@ const OrderTabs = () => {
             <OverviewPanel />
           </TabPanel>
           <TabPanel>
-            <OverviewPanel />
+            <OnlineOrderPanel />
           </TabPanel>
           <TabPanel>
-            <OverviewPanel />
+            <ReviewsPanel />
           </TabPanel>
           <TabPanel>
-            <OverviewPanel />
+            <PhotosPanel />
           </TabPanel>
           <TabPanel>
-            <OverviewPanel />
+            <MenuPanel />
           </TabPanel>
         </TabPanels>
       </Tabs>

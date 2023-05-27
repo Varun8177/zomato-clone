@@ -47,7 +47,7 @@ const Order = () => {
           </BreadcrumbItem>
 
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Nagpur</BreadcrumbLink>
+            <BreadcrumbLink href="/">Bangalore</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem>
             <BreadcrumbLink href="/nagpur/delivery">
