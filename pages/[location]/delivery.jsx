@@ -2,6 +2,7 @@ import Products from "@/components/Delivery/Products";
 import Sections from "@/components/Delivery/Sections";
 import Slider from "@/components/Delivery/slider/slider";
 import DeleveryNavbar from "@/components/Navbar/DeleveryNavbar";
+import { getRestraunts } from "@/redux/actions/PlacesAction";
 import {
   Box,
   Breadcrumb,
@@ -10,9 +11,12 @@ import {
   Flex,
   Heading,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-const delivery = () => {
+const Delivery = () => {
+  const { place } = useSelector((state) => state.placeReducer);
+
   return (
     <Box>
       <DeleveryNavbar />
@@ -58,9 +62,9 @@ const delivery = () => {
           <Slider />
         </Box>
       </Box>
-      <Products title={"Delivery Restaurants in Nagpur"} />
+      <Products title={`Delivery Restaurants in ${place}`} />
     </Box>
   );
 };
 
-export default delivery;
+export default Delivery;

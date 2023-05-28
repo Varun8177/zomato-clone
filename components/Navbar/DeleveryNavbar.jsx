@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Button,
@@ -24,6 +24,7 @@ import SignupModal from "./SignupModal";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import { getPlace } from "@/redux/PlacesSlice";
 
 const DeleveryNavbar = () => {
   const { place } = useSelector((state) => state.placeReducer);
@@ -42,6 +43,14 @@ const DeleveryNavbar = () => {
       });
     }
   };
+  useEffect(() => {
+    let sub = true;
+    dispatch(getPlace(router.query.location));
+    return () => {
+      console.log("first");
+      sub = false;
+    };
+  }, [dispatch, router.query.location]);
   return (
     <Flex alignItems={"center"} color={"black"} pt={"10px"} pb={"5px"}>
       <Flex

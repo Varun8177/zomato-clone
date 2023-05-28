@@ -20,8 +20,12 @@ import { RiShareForwardLine } from "react-icons/ri";
 import { AiFillStar } from "react-icons/ai";
 import IconText from "@/components/Order/IconText";
 import OrderTabs from "@/components/Order/OrderTabs";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
-const Order = () => {
+const Order = ({ restaurant }) => {
+  const { place } = useSelector((state) => state.placeReducer);
+  console.log(restaurant);
   return (
     <Box>
       <DeleveryNavbar />
@@ -47,16 +51,16 @@ const Order = () => {
           </BreadcrumbItem>
 
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Bangalore</BreadcrumbLink>
+            <BreadcrumbLink href="/">{place}</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/nagpur/delivery">
+            <BreadcrumbLink href={`/${place}/delivery`}>
               Order Online
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink href="/nagpur/order/1">
-              Behrouz Biryani
+            <BreadcrumbLink href={`/${place}/order/${restaurant.R.res_id}`}>
+              {restaurant.name}
             </BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
@@ -82,13 +86,7 @@ const Order = () => {
             objectFit={"cover"}
             overflow={"hidden"}
           >
-            <Image
-              src={
-                "https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/birani-prop.webp?alt=media&token=a628490e-c402-483a-a61b-5ae1ccf79b31"
-              }
-              alt=""
-              fill
-            />
+            <Image src={restaurant.featured_image} alt="" fill />
           </Box>
         </Box>
         <Show above="lg">
@@ -108,13 +106,7 @@ const Order = () => {
               objectFit={"cover"}
               overflow={"hidden"}
             >
-              <Image
-                src={
-                  "https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/birani-prop.webp?alt=media&token=a628490e-c402-483a-a61b-5ae1ccf79b31"
-                }
-                alt=""
-                fill
-              />
+              <Image src={restaurant.featured_image} alt="" fill />
             </Box>
             <Box
               cursor={"pointer"}
@@ -124,13 +116,7 @@ const Order = () => {
               objectFit={"cover"}
               overflow={"hidden"}
             >
-              <Image
-                src={
-                  "https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/birani-prop.webp?alt=media&token=a628490e-c402-483a-a61b-5ae1ccf79b31"
-                }
-                alt=""
-                fill
-              />
+              <Image src={restaurant.featured_image} alt="" fill />
             </Box>
           </Flex>
         </Show>
@@ -138,9 +124,7 @@ const Order = () => {
           <Box
             backgroundSize={"cover"}
             backgroundPosition={"center"}
-            bgImage={
-              "https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/birani-prop.webp?alt=media&token=a628490e-c402-483a-a61b-5ae1ccf79b31"
-            }
+            bgImage={restaurant.featured_image}
             h={"100%"}
             w={"20%"}
             position={"relative"}
@@ -166,7 +150,7 @@ const Order = () => {
           justifyContent={"space-between"}
           flexWrap={"wrap"}
         >
-          <Heading fontWeight={400}>Behrouz Biryani</Heading>
+          <Heading fontWeight={400}>{restaurant.name}</Heading>
           <Flex alignItems={"center"} gap={10} flexWrap={"wrap"}>
             <IconText
               icon={<AiFillStar color="white" />}
@@ -179,12 +163,12 @@ const Order = () => {
               color={"green.400"}
               reviews={1933}
               title={"Delivery Reviews"}
-              rating={5.5}
+              rating={restaurant.user_rating.aggregate_rating}
             />
           </Flex>
         </Flex>
-        <Text>Biryani, Kebab</Text>
-        <Text color={"GrayText"}>Jayanagar, Bangalore</Text>
+        <Text>{restaurant.cuisines}</Text>
+        <Text color={"GrayText"}>{restaurant.location.address}</Text>
         <Flex w={"100%"} gap={5} mt={"10px"} mb={"20px"} flexWrap={"wrap"}>
           <Button
             variant={"outline"}
@@ -215,6 +199,23 @@ const Order = () => {
       <OrderTabs />
     </Box>
   );
+};
+
+export const getServerSideProps = async ({ params }) => {
+  const res = await axios.get(
+    `https://developers.zomato.com/api/v2.1/restaurant?res_id=${params.id}`,
+    {
+      headers: {
+        "user-key": process.env.NEXT_PUBLIC_ZOMATO_USER_KEY,
+      },
+    }
+  );
+
+  return {
+    props: {
+      restaurant: res.data,
+    },
+  };
 };
 
 export default Order;
