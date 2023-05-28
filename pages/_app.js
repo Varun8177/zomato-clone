@@ -1,11 +1,16 @@
 import Footer from '@/components/Footer'
+import store from '@/redux/store'
 import '@/styles/globals.css'
 import { ChakraProvider } from '@chakra-ui/react'
+import { Provider } from 'react-redux'
 
 export default function App({ Component, pageProps }) {
   return (
-    <ChakraProvider>
-      <Component {...pageProps} />
-      <Footer />
-    </ChakraProvider>)
+    <Provider store={store}>
+      <ChakraProvider>
+        <Component {...pageProps} />
+        <Footer />
+      </ChakraProvider>
+    </Provider>
+  )
 }

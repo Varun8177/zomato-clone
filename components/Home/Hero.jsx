@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Box,
   Button,
   Flex,
   Heading,
@@ -13,11 +12,30 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
-import Image from "next/image";
 import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
 import { IoMdLocate } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { getLiveLocation } from "@/redux/action";
+import { useRouter } from "next/router";
 
 const Hero = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { place } = useSelector((state) => state.placeReducer);
+  const handleClick = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((positions) => {
+        router.push({
+          query: {
+            lat: positions.coords.latitude,
+            lon: positions.coords.longitude,
+          },
+        });
+        getLiveLocation(positions.coords, dispatch);
+      });
+    }
+  };
+
   return (
     <Flex
       flexDir={"column"}
@@ -62,29 +80,29 @@ const Hero = () => {
           >
             <Flex alignItems={"center"} gap={"10px"}>
               <IoMdLocate />
-              <Text display={{ base: "none", sm: "block" }}>Location</Text>
+              <Text
+                display={{ base: "none", sm: "block" }}
+                minW={"fit-content"}
+              >
+                {place || "Location"}
+              </Text>
             </Flex>
           </MenuButton>
-          <MenuList bgColor={"white"} color={"black"} mt={"7px"}>
-            <MenuItem minH="48px">
-              <Box
-                position={"relative"}
-                w={"30px"}
-                h={"30px"}
-                borderRadius={"50%"}
-                objectFit={"cover"}
-                border={"1px solid"}
-                overflow={"hidden"}
+          {place ? null : (
+            <MenuList bgColor={"white"} color={"black"} mt={"7px"}>
+              <MenuItem
+                w={"500px"}
+                pt={"10px"}
+                pb={"10px"}
+                closeOnSelect={false}
               >
-                <Image
-                  src="https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/zomato-banner.webp?alt=media&token=9fe4834f-bc76-4a0a-97f2-83a210d2d4f6"
-                  alt="Fluffybuns the destroyer"
-                  fill
-                />
-              </Box>
-              <span>Fluffybuns the Destroyer</span>
-            </MenuItem>
-          </MenuList>
+                <IoMdLocate color="red" size={20} />
+                <Text ml={"10px"} onClick={handleClick}>
+                  Detect current Location Using GPS
+                </Text>
+              </MenuItem>
+            </MenuList>
+          )}
         </Menu>
         <InputGroup>
           <InputLeftElement pointerEvents="none">

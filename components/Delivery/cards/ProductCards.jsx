@@ -13,7 +13,7 @@ const ProductCards = () => {
       _hover={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}
       p={2}
       cursor={"pointer"}
-      onClick={() => router.push("/nagpur/order/1")}
+      onClick={() => router.push("/bangalore/order/1")}
     >
       <Box
         position={"relative"}
