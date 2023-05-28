@@ -1,10 +1,12 @@
 import { Box, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const CollectionCards = () => {
+  const { place } = useSelector((state) => state.placeReducer);
   return (
-    <Link href={"/location/dine-out"}>
+    <Link href={`/${place || "India"}/dine-out`}>
       <Box
         cursor={"pointer"}
         minW={"200px"}

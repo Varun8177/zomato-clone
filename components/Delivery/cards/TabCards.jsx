@@ -2,10 +2,12 @@ import { Box, Flex, Heading, Tab } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const TabCards = ({ imgURL, title, section }) => {
+  const { place } = useSelector((state) => state.placeReducer);
   return (
-    <Link href={`/nagpur/${section}`}>
+    <Link href={`/${place}/${section}`}>
       <Tab _selected={{ color: "red" }} color={"GrayText"}>
         <Flex alignItems={"center"} gap={"10px"}>
           <Flex
