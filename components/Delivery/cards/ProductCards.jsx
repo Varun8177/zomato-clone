@@ -2,8 +2,19 @@ import { Box, Divider, Flex, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
+import { useSelector } from "react-redux";
 
-const ProductCards = () => {
+const ProductCards = ({
+  imgURL,
+  name,
+  rating,
+  highlight,
+  cost,
+  bg_color,
+  res_id,
+}) => {
+  const randomNumber = String(Math.random()).split(".")[1].substring(2, 5);
+  const { place } = useSelector((state) => state.placeReducer);
   const router = useRouter();
   return (
     <Box
@@ -13,7 +24,7 @@ const ProductCards = () => {
       _hover={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}
       p={2}
       cursor={"pointer"}
-      onClick={() => router.push("/bangalore/order/1")}
+      onClick={() => router.push(`/${place}/order/${res_id}`)}
     >
       <Box
         position={"relative"}
@@ -23,13 +34,7 @@ const ProductCards = () => {
         objectFit={"contain"}
         overflow={"hidden"}
       >
-        <Image
-          src={
-            "https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/birani-prop.webp?alt=media&token=a628490e-c402-483a-a61b-5ae1ccf79b31"
-          }
-          alt=""
-          fill
-        />
+        <Image src={imgURL} alt="" fill />
         <Text
           position={"absolute"}
           bgColor={"blackAlpha.900"}
@@ -37,6 +42,8 @@ const ProductCards = () => {
           fontSize={"10px"}
           left={4}
           top={3}
+          opacity={0.5}
+          p={"2px"}
         >
           Promoted
         </Text>
@@ -72,10 +79,10 @@ const ProductCards = () => {
         alignItems={"center"}
       >
         <Text as={"b"} fontWeight={600}>
-          Hotel Swad
+          {name.length > 20 ? `${name.substr(0, 30)}...` : name}
         </Text>
         <Text
-          bgColor={"green.400"}
+          bgColor={"#" + bg_color}
           color={"Background"}
           fontSize={"13px"}
           rounded={"5px"}
@@ -83,7 +90,7 @@ const ProductCards = () => {
           pl={"5px"}
           fontWeight={"bold"}
         >
-          3.3 *
+          {rating} *
         </Text>
       </Flex>
       <Flex
@@ -92,8 +99,10 @@ const ProductCards = () => {
         mt={"5px"}
         alignItems={"center"}
       >
-        <Text color={"GrayText"}>North Indian, Biryani</Text>
-        <Text color={"GrayText"}>₹200 for one</Text>
+        <Text color={"GrayText"}>
+          {highlight.length > 20 ? `${highlight.substr(0, 20)}...` : highlight}
+        </Text>
+        <Text color={"GrayText"}>₹{Math.floor(cost / 2)} for one</Text>
       </Flex>
       <Divider colorScheme="blackAlpha" mt={"10px"} mb={"10px"} />
       <Flex gap={"10px"}>
@@ -107,7 +116,7 @@ const ProductCards = () => {
           />
         </Box>
         <Text color={"GrayText"} fontSize={"12px"}>
-          875+ orders placed from here recently
+          {randomNumber}+ orders placed from here recently
         </Text>
       </Flex>
     </Box>
