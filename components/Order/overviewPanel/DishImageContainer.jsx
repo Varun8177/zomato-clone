@@ -2,14 +2,14 @@ import { Box } from "@chakra-ui/react";
 import Image from "next/image";
 import React from "react";
 
-const PhotoContainer = ({ imgURL }) => {
+const DishImageContainer = ({ imgURL }) => {
   return (
     <Box
-      w={"200px"}
-      h={"150px"}
+      w={"150px"}
+      h={"130px"}
       rounded={"10px"}
       position={"relative"}
-      objectFit={"cover"}
+      objectFit={"contain"}
       overflow={"hidden"}
       cursor={"pointer"}
     >
@@ -18,4 +18,4 @@ const PhotoContainer = ({ imgURL }) => {
   );
 };
 
-export default PhotoContainer;
+export default DishImageContainer;

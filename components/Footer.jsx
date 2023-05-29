@@ -5,7 +5,6 @@ import {
   Divider,
   Flex,
   Heading,
-  IconButton,
   Menu,
   MenuButton,
   MenuItem,
@@ -14,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import FooterCards from "./Footer/FooterCards";
-import Image from "next/image";
 import SocialLinks from "./Footer/SocialLinks";
 
 const Footer = () => {

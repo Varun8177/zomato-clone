@@ -1,8 +1,19 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import CollectionCards from "./cards/CollectionCards";
+import { getCollections } from "@/redux/actions/PlacesAction";
+import { useDispatch, useSelector } from "react-redux";
 
 const Collections = () => {
+  const dispatch = useDispatch();
+  const { collections, place } = useSelector((state) => state.placeReducer);
+  useEffect(() => {
+    const controller = new AbortController();
+    getCollections(dispatch, controller, place);
+    return () => {
+      controller.abort();
+    };
+  }, [dispatch, place]);
   return (
     <Box w={{ base: "100%", lg: "70%" }} m={"auto"} mt={"20px"}>
       <Heading
@@ -19,16 +30,20 @@ const Collections = () => {
       </Text>
       <Flex
         w={"100%"}
-        justifyContent={"space-between"}
         alignItems={"center"}
         flexWrap={"wrap"}
-        gap={"10px"}
+        gap={"20px"}
         mt={"20px"}
       >
-        <CollectionCards />
-        <CollectionCards />
-        <CollectionCards />
-        <CollectionCards />
+        {collections?.slice(0, 4)?.map((item, i) => {
+          return (
+            <CollectionCards
+              key={i}
+              imgURL={item.collection.image_url}
+              title={item.collection.title}
+            />
+          );
+        })}
       </Flex>
     </Box>
   );

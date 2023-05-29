@@ -13,12 +13,16 @@ import {
 import React from "react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import ReviewCard from "./reviewPanel/ReviewCard";
+import { useSelector } from "react-redux";
 
 const ReviewsPanel = () => {
+  const {
+    restrauntDetails: { all_reviews, name },
+  } = useSelector((state) => state.placeReducer);
   return (
     <Box>
       <Heading fontSize={{ base: "xl" }} w={"fit-content"} fontWeight={500}>
-        Behrouz Biryani Reviews
+        {name} Reviews
       </Heading>
       <Flex
         w={"100%"}
@@ -51,12 +55,9 @@ const ReviewsPanel = () => {
           </MenuList>
         </Menu>
       </Flex>
-      <ReviewCard />
-      <ReviewCard />
-      <ReviewCard />
-      <ReviewCard />
-      <ReviewCard />
-      <ReviewCard />
+      {all_reviews?.reviews?.map((review, i) => {
+        return <ReviewCard key={i} />;
+      })}
     </Box>
   );
 };

@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import TabCards from "./cards/TabCards";
 import DeliveryTab from "./cards/DeliveryTab";
-import DineOutTab from "../Dine-out/cards/DineOutTab";
 const Sections = ({ index }) => {
   const tabDetails = [
     {

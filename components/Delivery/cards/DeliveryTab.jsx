@@ -10,8 +10,13 @@ import {
 import React from "react";
 import FilterModal from "../modals/FilterModal";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { RxCross1 } from "react-icons/rx";
+import { removeFilter } from "@/redux/PlacesSlice";
 
 const DeliveryTab = () => {
+  const { ActiveFilters } = useSelector((state) => state.placeReducer);
+  const dispatch = useDispatch();
   return (
     <TabPanel>
       <Flex
@@ -23,6 +28,25 @@ const DeliveryTab = () => {
         flexWrap={"wrap"}
       >
         <FilterModal />
+        {ActiveFilters?.map((filter, i) => {
+          return (
+            <Button
+              key={i}
+              cursor={"pointer"}
+              color={"white"}
+              bg={"red.400"}
+              rightIcon={
+                <RxCross1
+                  onClick={() => {
+                    dispatch(removeFilter(i));
+                  }}
+                />
+              }
+            >
+              {filter}
+            </Button>
+          );
+        })}
         <Button variant={"outline"} cursor={"pointer"} color={"GrayText"}>
           Rating: 4.0+
         </Button>

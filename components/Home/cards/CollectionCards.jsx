@@ -1,38 +1,49 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, useToast } from "@chakra-ui/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { useSelector } from "react-redux";
 
-const CollectionCards = () => {
+const CollectionCards = ({ imgURL, title }) => {
   const { place } = useSelector((state) => state.placeReducer);
+  const router = useRouter();
+  const toast = useToast();
   return (
-    <Link href={`/${place || "India"}/dine-out`}>
-      <Box
-        cursor={"pointer"}
-        minW={"200px"}
-        m={{
-          base: "auto",
-          lg: "0",
-        }}
-        bgImage={
-          "https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/zomato-banner.webp?alt=media&token=9fe4834f-bc76-4a0a-97f2-83a210d2d4f6"
+    <Box
+      cursor={"pointer"}
+      minW={"200px"}
+      m={{
+        base: "auto",
+        lg: "0",
+      }}
+      bgImage={imgURL}
+      backgroundSize={"cover"}
+      backgroundPosition={"center"}
+      h={"300px"}
+      w={"250px"}
+      borderRadius={"5px"}
+      color={"white"}
+      position={"relative"}
+      onClick={() => {
+        if (place) {
+          router.push(`/${place}/dine-out`);
+        } else {
+          toast.closeAll();
+          toast({
+            title: "Please select a location to proceed",
+            status: "warning",
+            position: "top",
+          });
         }
-        backgroundSize={"cover"}
-        backgroundPosition={"center"}
-        h={"300px"}
-        w={"250px"}
-        borderRadius={"5px"}
-        color={"white"}
-        position={"relative"}
-      >
-        <Text as={"b"} position={"absolute"} bottom={8} left={"3"}>
-          On the outskirts
-        </Text>
-        <Text position={"absolute"} bottom={2} left={"3"}>
-          24 places
-        </Text>
-      </Box>
-    </Link>
+      }}
+    >
+      <Text as={"b"} position={"absolute"} bottom={8} left={"3"}>
+        {title}
+      </Text>
+      <Text position={"absolute"} bottom={2} left={"3"}>
+        24 places
+      </Text>
+    </Box>
   );
 };
 
