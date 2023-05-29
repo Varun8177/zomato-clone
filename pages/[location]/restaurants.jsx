@@ -3,15 +3,21 @@ import Sections from "@/components/Delivery/Sections";
 import DineOutTab from "@/components/Dine-out/cards/DineOutTab";
 import Collections from "@/components/Home/Collections";
 import DeleveryNavbar from "@/components/Navbar/DeleveryNavbar";
-import {
-  Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Flex,
-} from "@chakra-ui/react";
-import React from "react";
+import { getNightLifeReq } from "@/redux/actions/PlacesAction";
+import { Box, Breadcrumb, BreadcrumbItem, Flex } from "@chakra-ui/react";
+import Link from "next/link";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 const Restaurants = () => {
+  const { place, dineoutData } = useSelector((state) => state.placeReducer);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const controller = new AbortController();
+    getNightLifeReq(dispatch, controller, place, "nightlife", 3);
+    return () => {
+      controller.abort();
+    };
+  }, [dispatch, place]);
   return (
     <Box>
       <DeleveryNavbar />
@@ -28,24 +34,33 @@ const Restaurants = () => {
       >
         <Breadcrumb fontSize={"sm"} fontWeight={400} color={"GrayText"}>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            <Link href="/" passHref>
+              Home
+            </Link>
           </BreadcrumbItem>
 
           <BreadcrumbItem>
-            <BreadcrumbLink href="#">Docs</BreadcrumbLink>
+            <Link href="/" passHref>
+              {place}
+            </Link>
           </BreadcrumbItem>
 
           <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink href="#">Breadcrumb</BreadcrumbLink>
+            <Link href={`/${place}/restaurants`} passHref>
+              restaurants
+            </Link>
           </BreadcrumbItem>
         </Breadcrumb>
       </Flex>
       <Sections index={2} />
       <Box bgColor={"#f8f8f8"} pt={5} pb={5}>
-        <Collections />
+        <Collections data={dineoutData.slice(0, 4)} />
       </Box>
       <DineOutTab />
-      <Products title={"Nightlife Restaurants in Nagpur"} />
+      <Products
+        title={`Nightlife Restaurants in ${place}`}
+        data={dineoutData}
+      />
     </Box>
   );
 };

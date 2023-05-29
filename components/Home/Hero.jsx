@@ -16,19 +16,37 @@ import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
 import { IoMdLocate } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  autoCompleteSearch,
   getLiveLocation,
   getLocationDetails,
 } from "@/redux/actions/PlacesAction";
 import { useRouter } from "next/router";
-import { getPlace, getSuggestionSuccess } from "@/redux/PlacesSlice";
+import {
+  getPlace,
+  getSuggestionSuccess,
+  startLocationLoading,
+} from "@/redux/PlacesSlice";
 
 const Hero = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [text, setText] = useState("");
-  const { place, suggestions } = useSelector((state) => state.placeReducer);
+  const [search, setSearch] = useState("");
+  const { place, suggestions, locationLoad } = useSelector(
+    (state) => state.placeReducer
+  );
+  useEffect(() => {
+    if (router.query.l) {
+      dispatch(getPlace(router.query.l));
+    }
+  }, [dispatch, router.query.l]);
+  const CreateQuery = (val) => {
+    console.log(val);
+    router.push({ query: { l: val } });
+  };
   const handleClick = () => {
     if (navigator.geolocation) {
+      dispatch(startLocationLoading());
       navigator.geolocation.getCurrentPosition((positions) => {
         router.push({
           query: {
@@ -36,7 +54,7 @@ const Hero = () => {
             lon: positions.coords.longitude,
           },
         });
-        getLiveLocation(positions.coords, dispatch);
+        getLiveLocation(positions.coords, dispatch, CreateQuery);
       });
     }
   };
@@ -50,6 +68,15 @@ const Hero = () => {
     return timeout;
   };
 
+  const handleSearch = (search, dispatch) => {
+    const timeout = setTimeout(() => {
+      if (search.length > 0) {
+        autoCompleteSearch(search);
+      }
+    }, 600);
+    return timeout;
+  };
+
   useEffect(() => {
     let timeoutId = handleChange(text, dispatch);
 
@@ -58,6 +85,15 @@ const Hero = () => {
       clearTimeout(timeoutId);
     };
   }, [text, dispatch]);
+
+  useEffect(() => {
+    let timeoutId = handleSearch(search, dispatch);
+
+    return () => {
+      console.log("cleanup done for search");
+      clearTimeout(timeoutId);
+    };
+  }, [search, dispatch]);
 
   return (
     <Flex
@@ -96,12 +132,20 @@ const Hero = () => {
             color={"black"}
             w={"40%"}
             borderRightRadius={"0"}
+            border={"none"}
             _hover={{ bgColor: "white" }}
-            _focus={{ bgColor: "white" }}
-            _active={{ bgColor: "white" }}
+            _focus={{ bgColor: "white", outline: "none", boxShadow: "none" }}
             rightIcon={<ChevronDownIcon />}
+            focusBorderColor={"gray.300"}
+            outline={"0"}
           >
-            <Flex alignItems={"center"} gap={"10px"}>
+            <Flex
+              alignItems={"center"}
+              gap={"10px"}
+              _hover={{ bgColor: "white" }}
+              _focus={{ bgColor: "white", outline: "none" }}
+              focusBorderColor={"gray.300"}
+            >
               <IoMdLocate />
               <Text
                 display={{ base: "none", sm: "block" }}
@@ -111,12 +155,13 @@ const Hero = () => {
               </Text>
             </Flex>
           </MenuButton>
-          {/* {place ? null : ( */}
           <MenuList bgColor={"white"} color={"black"} mt={"7px"}>
             <MenuItem w={"500px"} pt={"10px"} pb={"10px"} closeOnSelect={false}>
               <IoMdLocate color="red" size={20} />
               <Text ml={"10px"} onClick={handleClick}>
-                Detect current Location Using GPS
+                {locationLoad
+                  ? "Determining your location..."
+                  : "Detect current Location Using GPS"}
               </Text>
             </MenuItem>
             <InputGroup>
@@ -135,17 +180,17 @@ const Hero = () => {
                     <MenuItem
                       key={s.entity_id}
                       onClick={() => {
-                        dispatch(getPlace(s.title));
+                        dispatch(getPlace(s.name));
                         dispatch(getSuggestionSuccess([]));
+                        CreateQuery(s.name);
                       }}
                     >
-                      {s.title}
+                      {s.name + ", " + s.country_name}
                     </MenuItem>
                   );
                 })
               : null}
           </MenuList>
-          {/* )} */}
         </Menu>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
@@ -161,6 +206,7 @@ const Hero = () => {
             _focus={{ bgColor: "white" }}
             border={"none"}
             color={"black"}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </InputGroup>
       </Flex>

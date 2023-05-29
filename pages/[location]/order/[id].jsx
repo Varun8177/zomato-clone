@@ -1,14 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   Button,
   Divider,
   Flex,
   Heading,
-  IconButton,
   Show,
   Text,
 } from "@chakra-ui/react";
@@ -21,11 +19,44 @@ import { AiFillStar } from "react-icons/ai";
 import IconText from "@/components/Order/IconText";
 import OrderTabs from "@/components/Order/OrderTabs";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getRestruntDetails } from "@/redux/PlacesSlice";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Order = ({ restaurant }) => {
+  const router = useRouter();
   const { place } = useSelector((state) => state.placeReducer);
-  console.log(restaurant);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getRestruntDetails(restaurant));
+  });
+
+  const fetchDetails = async (name) => {
+    if (name) {
+      // try {
+      //   const res = await axios.get(
+      //     `https://foodiefetch.p.rapidapi.com/swiggy`,
+      //     {
+      //       params: {
+      //         query: name,
+      //       },
+      //       headers: {
+      //         "X-RapidAPI-Key":
+      //           "b8aff06a70msh62275ffba91f069p1212eajsn4fb5db6667bd",
+      //         "X-RapidAPI-Host": "foodiefetch.p.rapidapi.com",
+      //       },
+      //     }
+      //   );
+      //   const { data } = res;
+      // } catch (error) {
+      //   console.log(error);
+      // }
+    }
+  };
+  useEffect(() => {
+    fetchDetails(restaurant.name);
+  }, [restaurant.name]);
   return (
     <Box>
       <DeleveryNavbar />
@@ -43,25 +74,31 @@ const Order = ({ restaurant }) => {
       >
         <Breadcrumb fontSize={"sm"} fontWeight={400} color={"GrayText"}>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            <Link href="/" passHref>
+              Home
+            </Link>
           </BreadcrumbItem>
 
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">India</BreadcrumbLink>
+            <Link href="/" passHref>
+              India
+            </Link>
           </BreadcrumbItem>
 
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">{place}</BreadcrumbLink>
+            <Link href="/" passHref>
+              {place}
+            </Link>
           </BreadcrumbItem>
           <BreadcrumbItem>
-            <BreadcrumbLink href={`/${place}/delivery`}>
+            <Link href={`/${place}/delivery`} passHref>
               Order Online
-            </BreadcrumbLink>
+            </Link>
           </BreadcrumbItem>
           <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink href={`/${place}/order/${restaurant.R.res_id}`}>
+            <Link href={`/${place}/order/${restaurant.R.res_id}`} passHref>
               {restaurant.name}
-            </BreadcrumbLink>
+            </Link>
           </BreadcrumbItem>
         </Breadcrumb>
       </Flex>

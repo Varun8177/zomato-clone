@@ -1,14 +1,5 @@
-import {
-  Button,
-  Flex,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  TabPanel,
-} from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import React from "react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import FilterModal from "@/components/Delivery/modals/FilterModal";
 const DineOutTab = () => {
   return (

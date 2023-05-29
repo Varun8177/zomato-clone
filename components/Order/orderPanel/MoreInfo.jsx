@@ -1,8 +1,12 @@
 import { Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import React from "react";
 import { FcOk } from "react-icons/fc";
+import { useSelector } from "react-redux";
 
 const MoreInfo = () => {
+  const {
+    restrauntDetails: { highlights },
+  } = useSelector((state) => state.placeReducer);
   return (
     <>
       <Heading fontSize={{ base: "xl" }} w={"fit-content"} fontWeight={400}>
@@ -13,10 +17,10 @@ const MoreInfo = () => {
         mt={"20px"}
         mb={"30px"}
       >
-        {new Array(4).fill(0).map((_, i) => (
+        {highlights?.map((highlight, i) => (
           <Flex key={i} alignItems={"center"} gap={"5px"}>
             <FcOk />
-            <Text color={"GrayText"}>Home Delivery</Text>
+            <Text color={"GrayText"}>{highlight}</Text>
           </Flex>
         ))}
       </Grid>

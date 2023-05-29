@@ -3,16 +3,22 @@ import Sections from "@/components/Delivery/Sections";
 import DineOutTab from "@/components/Dine-out/cards/DineOutTab";
 import Collections from "@/components/Home/Collections";
 import DeleveryNavbar from "@/components/Navbar/DeleveryNavbar";
-import {
-  Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Flex,
-} from "@chakra-ui/react";
-import React from "react";
+import { getNightLifeReq } from "@/redux/actions/PlacesAction";
+import { Box, Breadcrumb, BreadcrumbItem, Flex } from "@chakra-ui/react";
+import Link from "next/link";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Dineout = () => {
+  const { place, dineoutData } = useSelector((state) => state.placeReducer);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const controller = new AbortController();
+    getNightLifeReq(dispatch, controller, place, "dinner", 2);
+    return () => {
+      controller.abort();
+    };
+  }, [dispatch, place]);
   return (
     <Box>
       <DeleveryNavbar />
@@ -29,15 +35,21 @@ const Dineout = () => {
       >
         <Breadcrumb fontSize={"sm"} fontWeight={400} color={"GrayText"}>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            <Link href="/" passHref>
+              Home
+            </Link>
           </BreadcrumbItem>
 
           <BreadcrumbItem>
-            <BreadcrumbLink href="#">Docs</BreadcrumbLink>
+            <Link href={`/`} passHref>
+              {place}
+            </Link>
           </BreadcrumbItem>
 
           <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink href="#">Breadcrumb</BreadcrumbLink>
+            <Link href={`/${place}/delivery`} passHref>
+              dine out
+            </Link>
           </BreadcrumbItem>
         </Breadcrumb>
       </Flex>
@@ -47,7 +59,10 @@ const Dineout = () => {
         <Collections />
       </Box>
       <DineOutTab />
-      <Products title={"Best Dining Restaurants near you in Nagpur"} />
+      <Products
+        title={`Best Dining Restaurants near you in ${place}`}
+        data={dineoutData}
+      />
     </Box>
   );
 };

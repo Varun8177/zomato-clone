@@ -1,10 +1,13 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text, useToast } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const OptionCards = ({ imgURL, title, subTitle, path }) => {
   const router = useRouter();
+  const { place } = useSelector((state) => state.placeReducer);
+  const toast = useToast();
   return (
     <Box
       h={"100%"}
@@ -20,7 +23,16 @@ const OptionCards = ({ imgURL, title, subTitle, path }) => {
       }}
       mt={{ base: "10px", lg: "0" }}
       onClick={() => {
-        router.push(path);
+        if (place) {
+          router.push(path);
+        } else {
+          toast.closeAll();
+          toast({
+            title: "Please select a location to proceed",
+            status: "warning",
+            position: "top",
+          });
+        }
       }}
     >
       <Box position={"relative"} h={"150px"} w={"100%"}>
