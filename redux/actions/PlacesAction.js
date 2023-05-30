@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getPlace, getRestrauntSuccess, getSuggestionSuccess, activateFilter, getDineOutSuccess, getCollectionSuccess, startLoading } from "../PlacesSlice"
+import { getPlace, getRestrauntSuccess, getSuggestionSuccess, activateFilter, getDineOutSuccess, getCollectionSuccess, startLoading } from "../slices/PlacesSlice"
 
 export const getLiveLocation = async (coords, dispatch, CreateQuery) => {
     const { latitude, longitude } = coords;

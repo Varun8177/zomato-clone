@@ -16,6 +16,8 @@ const placesSlice = createSlice({
     reducers: {
         startLoading: (state) => {
             state.load = true
+            state.restrauntDetails = []
+            state.dineoutData = []
         },
         startLocationLoading: (state) => {
             state.locationLoad = true
