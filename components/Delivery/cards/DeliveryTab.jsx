@@ -12,7 +12,7 @@ import FilterModal from "../modals/FilterModal";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { RxCross1 } from "react-icons/rx";
-import { removeFilter } from "@/redux/PlacesSlice";
+import { removeFilter } from "@/redux/slices/PlacesSlice";
 
 const DeliveryTab = () => {
   const { ActiveFilters } = useSelector((state) => state.placeReducer);

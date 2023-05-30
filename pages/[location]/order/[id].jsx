@@ -20,7 +20,7 @@ import IconText from "@/components/Order/IconText";
 import OrderTabs from "@/components/Order/OrderTabs";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { getRestruntDetails } from "@/redux/PlacesSlice";
+import { getRestruntDetails } from "@/redux/slices/PlacesSlice";
 import Link from "next/link";
 import { useRouter } from "next/router";
 

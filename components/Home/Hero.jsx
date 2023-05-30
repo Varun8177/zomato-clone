@@ -25,7 +25,7 @@ import {
   getPlace,
   getSuggestionSuccess,
   startLocationLoading,
-} from "@/redux/PlacesSlice";
+} from "@/redux/slices/PlacesSlice";
 
 const Hero = () => {
   const router = useRouter();
