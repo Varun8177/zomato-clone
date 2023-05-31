@@ -12,5 +12,5 @@ const UserSlice = createSlice({
     }
 })
 
-export const { getUserDataSuccess } = UserSlice.actions
+export const { getUserDataSuccess, getBookmarkSuccess } = UserSlice.actions
 export default UserSlice.reducer

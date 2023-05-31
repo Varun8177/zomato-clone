@@ -25,6 +25,7 @@ const ProductCards = ({
       p={2}
       cursor={"pointer"}
       onClick={() => router.push(`/${place}/order/${res_id}`)}
+      h={"fit-content"}
     >
       <Box
         position={"relative"}

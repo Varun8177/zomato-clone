@@ -1,7 +1,5 @@
 import { Auth } from "@/firebase/firebase.config";
-import { VerifyPhone } from "@/redux/actions/UserAction";
 import { getUserDataSuccess } from "@/redux/slices/UserSlice";
-import { PhoneIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Button,
@@ -63,7 +61,7 @@ const PhoneComponent = () => {
         setConformation(confirmationResult);
         console.log(confirmationResult);
         customToast(
-          "",
+          "info",
           "OTP sended successfully!",
           "a verification code has been sent to the mobile number, please enter it to proceed"
         );
@@ -91,47 +89,61 @@ const PhoneComponent = () => {
     }
   };
   return (
-    <form onSubmit={ShowOtp ? onOTPVerify : onSignup}>
+    <>
       <div id="recaptcha-container"></div>
       {ShowOtp ? (
-        <Input
-          type="tel"
-          placeholder="Enter the verification code"
-          mb={"10px"}
-          onChange={(e) => setOTP(e.target.value)}
-        />
-      ) : (
-        <InputGroup>
-          <InputLeftElement pointerEvents="none">
-            <Avatar
-              src="https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/india.png?alt=media&token=32fdbcee-57dd-4b78-97da-3f5835e1ac7b"
-              size={"sm"}
-            />
-          </InputLeftElement>
+        <form onSubmit={onOTPVerify}>
           <Input
             type="tel"
-            placeholder="Enter your phone number"
+            placeholder="Enter the verification code"
             mb={"10px"}
-            onChange={(e) => setPhone(e.target.value)}
-            minLength={10}
-            maxLength={10}
-            required
+            onChange={(e) => setOTP(e.target.value)}
           />
-        </InputGroup>
+          <Button
+            mt={"20px"}
+            w={"100%"}
+            color={"white"}
+            bgColor={"#e03546"}
+            _hover={{ bgColor: "#e03546" }}
+            type="submit"
+            isLoading={load}
+          >
+            verify OTP
+          </Button>
+        </form>
+      ) : (
+        <form onSubmit={onSignup}>
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <Avatar
+                src="https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/india.png?alt=media&token=32fdbcee-57dd-4b78-97da-3f5835e1ac7b"
+                size={"sm"}
+              />
+            </InputLeftElement>
+            <Input
+              type="tel"
+              placeholder="Enter your phone number"
+              mb={"10px"}
+              onChange={(e) => setPhone(e.target.value)}
+              minLength={10}
+              maxLength={10}
+              required
+            />
+          </InputGroup>
+          <Button
+            mt={"20px"}
+            w={"100%"}
+            color={"white"}
+            bgColor={"#e03546"}
+            _hover={{ bgColor: "#e03546" }}
+            type="submit"
+            isLoading={load}
+          >
+            Get verification code
+          </Button>
+        </form>
       )}
-
-      <Button
-        mt={"20px"}
-        w={"100%"}
-        color={"white"}
-        bgColor={"#e03546"}
-        _hover={{ bgColor: "#e03546" }}
-        type="submit"
-        isLoading={load}
-      >
-        {ShowOtp ? "Verify OTP" : "Get verification code"}
-      </Button>
-    </form>
+    </>
   );
 };
 

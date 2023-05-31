@@ -25,7 +25,7 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { getPlace } from "@/redux/slices/PlacesSlice";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { Auth } from "@/firebase/firebase.config";
 import { getUserDataSuccess } from "@/redux/slices/UserSlice";
 
