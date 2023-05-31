@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getRestruntDetails } from "@/redux/slices/PlacesSlice";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { AddFavouriteReq } from "@/redux/actions/UserAction";
+import { AddFavouriteReq, AddRecentReq } from "@/redux/actions/UserAction";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase/firebase.config";
 
@@ -83,8 +83,9 @@ const Order = ({ restaurant }) => {
   useEffect(() => {
     if (user && user.uid && restaurant.id) {
       getRestraunts(user.uid, restaurant.id);
+      AddRecentReq(user.uid, restaurant);
     }
-  }, [restaurant.id, user]);
+  }, [restaurant.id, user, restaurant]);
   return (
     <Box>
       <DeleveryNavbar />

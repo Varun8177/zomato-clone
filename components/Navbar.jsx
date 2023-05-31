@@ -104,7 +104,7 @@ const Navbar = () => {
                           textAlign={"left"}
                           w={"fit-content"}
                           _hover={{ bgColor: "transparent" }}
-                          onClick={() => router.push("/profile")}
+                          onClick={() => router.push("/profile?t=0")}
                         >
                           {text}
                         </MenuItem>

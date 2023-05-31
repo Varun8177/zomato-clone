@@ -195,6 +195,7 @@ const DeleveryNavbar = () => {
                         textAlign={"left"}
                         w={"fit-content"}
                         _hover={{ bgColor: "transparent" }}
+                        onClick={() => router.push("/profile?t=0")}
                       >
                         {text}
                       </MenuItem>
