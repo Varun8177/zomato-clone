@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Breadcrumb,
@@ -9,6 +9,7 @@ import {
   Heading,
   Show,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import DeleveryNavbar from "@/components/Navbar/DeleveryNavbar";
 import Image from "next/image";
@@ -23,10 +24,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { getRestruntDetails } from "@/redux/slices/PlacesSlice";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { AddFavouriteReq } from "@/redux/actions/UserAction";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/firebase/firebase.config";
 
 const Order = ({ restaurant }) => {
   const router = useRouter();
   const { place } = useSelector((state) => state.placeReducer);
+  const { user } = useSelector((state) => state.userReducer);
+  const toast = useToast();
+  const [booked, setBooked] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getRestruntDetails(restaurant));
@@ -57,6 +64,27 @@ const Order = ({ restaurant }) => {
   useEffect(() => {
     fetchDetails(restaurant.name);
   }, [restaurant.name]);
+
+  const handleBooked = () => {
+    setBooked(true);
+  };
+
+  const getRestraunts = async (id, restaurantID) => {
+    const res = await getDoc(doc(db, "favourites", id));
+    if (res.exists()) {
+      let data = res
+        .data()
+        .restraunts.filter((item, i) => item.id === restaurantID);
+      if (data.length) {
+        setBooked(true);
+      }
+    }
+  };
+  useEffect(() => {
+    if (user && user.uid && restaurant.id) {
+      getRestraunts(user.uid, restaurant.id);
+    }
+  }, [restaurant.id, user]);
   return (
     <Box>
       <DeleveryNavbar />
@@ -216,12 +244,34 @@ const Order = ({ restaurant }) => {
             Direction
           </Button>
           <Button
-            variant={"outline"}
+            variant={booked ? "solid" : "outline"}
             fontWeight={400}
-            colorScheme="blackAlpha"
-            leftIcon={<BsBookmarkPlus color="red" />}
+            colorScheme={booked ? "red" : "blackAlpha"}
+            leftIcon={<BsBookmarkPlus color={booked ? "white" : "red"} />}
+            onClick={() => {
+              if (user) {
+                if (booked) {
+                  toast({
+                    title: "Already in your bookmark",
+                    status: "info",
+                    isClosable: true,
+                    position: "top-left",
+                  });
+                } else {
+                  AddFavouriteReq(user.uid, restaurant, handleBooked);
+                }
+              } else {
+                toast({
+                  title: "something went wrong",
+                  description: "please log in to use this functionality",
+                  status: "error",
+                  isClosable: true,
+                  position: "top-left",
+                });
+              }
+            }}
           >
-            Bookmark
+            {booked ? "Bookmarked" : "Bookmark"}
           </Button>
           <Button
             variant={"outline"}

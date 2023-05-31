@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import { Box } from '@chakra-ui/react'
+import { Box, Button, Text } from '@chakra-ui/react'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Home/Hero'
 import Options from '@/components/Home/Options'
@@ -29,4 +29,4 @@ export default function Home() {
     </>
   )
 }
-
+import React from "react";

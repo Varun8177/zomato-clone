@@ -19,11 +19,13 @@ import { Auth } from "@/firebase/firebase.config";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDataSuccess } from "@/redux/slices/UserSlice";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.userReducer);
   const dispatch = useDispatch();
   const options = ["profile", "bookmarks", "reviews", "settings"];
+  const router = useRouter();
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(Auth, (user) => {
       dispatch(getUserDataSuccess(user));
@@ -102,6 +104,7 @@ const Navbar = () => {
                           textAlign={"left"}
                           w={"fit-content"}
                           _hover={{ bgColor: "transparent" }}
+                          onClick={() => router.push("/profile")}
                         >
                           {text}
                         </MenuItem>

@@ -1,6 +1,7 @@
-import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPhoneNumber, signInWithPopup, updateProfile } from "firebase/auth";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
 import { getUserDataSuccess } from "../slices/UserSlice"
-import { Auth } from "@/firebase/firebase.config";
+import { Auth, db } from "@/firebase/firebase.config";
+import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 export const VerifyUser = async (dispatch) => {
     try {
@@ -51,5 +52,33 @@ export const CreateUserEmail = async (name, email, password, phone, CustomToast,
         }
     } catch (error) {
         CustomToast("something went wrong", error.message, "error");
+    }
+}
+
+
+export const AddFavouriteReq = async (id, restraunt, handleBooked) => {
+    try {
+        const res = await getDoc(doc(db, "favourites", id));
+        if (!res.exists()) {
+            await setDoc(doc(db, "favourites", id), { restraunts: [] });
+            await updateDoc(doc(db, "favourites", id), { restraunts: arrayUnion(restraunt) });
+            handleBooked()
+        } else {
+            await updateDoc(doc(db, "favourites", id), { restraunts: arrayUnion(restraunt) });
+            handleBooked()
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+const AddOrderReq = async (id, item) => {
+    try {
+        const res = await setDoc(doc(db, "orders", id), item);
+        console.log(res)
+    } catch (error) {
+        console.log(error)
     }
 }
