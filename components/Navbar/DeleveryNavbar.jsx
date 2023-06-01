@@ -28,6 +28,7 @@ import { getPlace } from "@/redux/slices/PlacesSlice";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { Auth } from "@/firebase/firebase.config";
 import { getUserDataSuccess } from "@/redux/slices/UserSlice";
+import { getInitalUser } from "@/redux/actions/UserAction";
 
 const DeleveryNavbar = () => {
   const { place } = useSelector((state) => state.placeReducer);
@@ -58,7 +59,7 @@ const DeleveryNavbar = () => {
   const options = ["profile", "bookmarks", "reviews", "settings"];
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(Auth, (user) => {
-      dispatch(getUserDataSuccess(user));
+      getInitalUser(user.uid, dispatch);
     });
     return () => {
       unSubscribe();

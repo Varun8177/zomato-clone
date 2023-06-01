@@ -70,11 +70,11 @@ const Order = ({ restaurant }) => {
   };
 
   const getRestraunts = async (id, restaurantID) => {
-    const res = await getDoc(doc(db, "favourites", id));
+    const res = await getDoc(doc(db, "users", id));
     if (res.exists()) {
       let data = res
         .data()
-        .restraunts.filter((item, i) => item.id === restaurantID);
+        .bookmarks.filter((item, i) => item.id === restaurantID);
       if (data.length) {
         setBooked(true);
       }

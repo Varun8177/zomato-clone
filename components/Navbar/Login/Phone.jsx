@@ -1,4 +1,4 @@
-import { Auth } from "@/firebase/firebase.config";
+import { Auth, db } from "@/firebase/firebase.config";
 import { getUserDataSuccess } from "@/redux/slices/UserSlice";
 import {
   Avatar,
@@ -9,6 +9,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -88,6 +89,21 @@ const PhoneComponent = () => {
       setLoad(false);
     }
   };
+
+  const handleSearch = async (e, phone) => {
+    e.preventDefault();
+    const q = query(collection(db, "users"), where("phoneNumber", "==", phone));
+    try {
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.size < 1) {
+        customToast("error", "No user found", "please signup first");
+      } else {
+        onSignup();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <div id="recaptcha-container"></div>
@@ -112,7 +128,7 @@ const PhoneComponent = () => {
           </Button>
         </form>
       ) : (
-        <form onSubmit={onSignup}>
+        <form onSubmit={(e) => handleSearch(e, phone)}>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
               <Avatar

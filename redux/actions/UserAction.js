@@ -3,17 +3,21 @@ import { getUserDataSuccess } from "../slices/UserSlice"
 import { Auth, db } from "@/firebase/firebase.config";
 import { arrayRemove, arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
+
 export const VerifyUser = async (dispatch) => {
     try {
         const res = await signInWithPopup(Auth, new GoogleAuthProvider())
         const { user } = res;
         if (user) {
+            await setDoc(doc(db, "users", user.uid), { bookmarks: [], recent: [], orders: [], uid: user.uid, displayName: user.displayName, phoneNumber: user.phoneNumber, email: user.email, photoURL: user.photoURL });
             dispatch(getUserDataSuccess(user))
         }
     } catch (error) {
         console.log(error)
     }
 }
+
+
 
 export const VerifyEmail = async (dispatch, email, password, customToast) => {
     try {
@@ -35,13 +39,8 @@ export const CreateUserEmail = async (name, email, password, phone, CustomToast,
         const { user } = res
         if (user) {
             const updatedUser = { ...user, displayName: name, phoneNumber: phone }
-            console.log(updatedUser)
             try {
-                const res2 = await updateProfile(user, {
-                    displayName: name,
-                    phoneNumber: phone,
-                });
-                console.log("updated", res2)
+                await setDoc(doc(db, "users", user.uid), { bookmarks: [], recent: [], orders: [], uid: user.uid, displayName: name, phoneNumber: phone, email: user.email, photoURL: user.photoURL });
                 dispatch(getUserDataSuccess(updatedUser))
                 CustomToast("account created successfully", "", "success");
                 onClose();
@@ -55,19 +54,24 @@ export const CreateUserEmail = async (name, email, password, phone, CustomToast,
     }
 }
 
+export const getInitalUser = async (id, dispatch) => {
+    try {
+        const res = await getDoc(doc(db, "users", id));
+        dispatch(getUserDataSuccess(res.data()));
+        console.log(res.data())
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 export const AddFavouriteReq = async (id, restraunt, handleBooked) => {
     try {
-        const res = await getDoc(doc(db, "favourites", id));
-        if (!res.exists()) {
-            await setDoc(doc(db, "favourites", id), { restraunts: [] });
-            await updateDoc(doc(db, "favourites", id), { restraunts: arrayUnion(restraunt) });
-            handleBooked()
-        } else {
-            await updateDoc(doc(db, "favourites", id), { restraunts: arrayUnion(restraunt) });
+        const res = await getDoc(doc(db, "users", id));
+        if (res.exists()) {
+            await updateDoc(doc(db, "users", id), { bookmarks: arrayUnion(restraunt) });
             handleBooked()
         }
-
     } catch (error) {
         console.log(error)
     }
@@ -75,9 +79,9 @@ export const AddFavouriteReq = async (id, restraunt, handleBooked) => {
 
 export const RemoveFavouriteReq = async (id, restraunt, handleRemoved) => {
     try {
-        const res = await getDoc(doc(db, "favourites", id));
+        const res = await getDoc(doc(db, "users", id));
         if (res.exists()) {
-            await updateDoc(doc(db, "favourites", id), { restraunts: arrayRemove(restraunt) });
+            await updateDoc(doc(db, "users", id), { bookmarks: arrayRemove(restraunt) });
             handleRemoved();
         }
     } catch (error) {
@@ -97,17 +101,13 @@ const AddOrderReq = async (id, item) => {
 
 export const AddRecentReq = async (id, restraunt) => {
     try {
-        const res = await getDoc(doc(db, "recent", id));
-        if (!res.exists()) {
-            await setDoc(doc(db, "recent", id), { restraunts: [] });
-            await updateDoc(doc(db, "recent", id), { restraunts: arrayUnion(restraunt) });
-        } else {
-            const checkArray = res.data().restraunts.filter((rest) => rest.id === restraunt.id)
+        const res = await getDoc(doc(db, "users", id));
+        if (res.exists()) {
+            const checkArray = res.data().recent.filter((rest) => rest.id === restraunt.id)
             if (checkArray.length === 0) {
-                await updateDoc(doc(db, "recent", id), { restraunts: arrayUnion(restraunt) });
+                await updateDoc(doc(db, "users", id), { recent: arrayUnion(restraunt) });
             }
         }
-
     } catch (error) {
         console.log(error)
     }

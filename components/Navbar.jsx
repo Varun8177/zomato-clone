@@ -20,6 +20,7 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDataSuccess } from "@/redux/slices/UserSlice";
 import { useRouter } from "next/router";
+import { getInitalUser } from "@/redux/actions/UserAction";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.userReducer);
@@ -28,7 +29,7 @@ const Navbar = () => {
   const router = useRouter();
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(Auth, (user) => {
-      dispatch(getUserDataSuccess(user));
+      getInitalUser(user.uid, dispatch);
     });
     return () => {
       unSubscribe();
