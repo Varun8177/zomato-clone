@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Box,
   Button,
   Flex,
   Menu,
@@ -10,17 +9,16 @@ import {
   Show,
   Text,
 } from "@chakra-ui/react";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import LoginModal from "./Navbar/LoginModal";
 import SignupModal from "./Navbar/SignupModal";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { Auth } from "@/firebase/firebase.config";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserDataSuccess } from "@/redux/slices/UserSlice";
 import { useRouter } from "next/router";
 import { getInitalUser } from "@/redux/actions/UserAction";
+import { getUserDataSuccess } from "@/redux/slices/UserSlice";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.userReducer);
@@ -29,13 +27,16 @@ const Navbar = () => {
   const router = useRouter();
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(Auth, (user) => {
-      getInitalUser(user.uid, dispatch);
+      if (user) {
+        getInitalUser(user.uid, dispatch);
+      } else {
+        dispatch(getUserDataSuccess(null));
+      }
     });
     return () => {
       unSubscribe();
     };
   }, [dispatch]);
-  console.log(user);
   return (
     <Flex alignItems={"center"} h={"80px"} bg={"transparent"} color={"white"}>
       <Flex

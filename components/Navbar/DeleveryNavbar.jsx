@@ -59,7 +59,11 @@ const DeleveryNavbar = () => {
   const options = ["profile", "bookmarks", "reviews", "settings"];
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(Auth, (user) => {
-      getInitalUser(user.uid, dispatch);
+      if (user) {
+        getInitalUser(user.uid, dispatch);
+      } else {
+        dispatch(getUserDataSuccess(null));
+      }
     });
     return () => {
       unSubscribe();
