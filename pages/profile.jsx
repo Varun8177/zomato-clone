@@ -7,45 +7,24 @@ import {
   Heading,
   IconButton,
   Text,
-  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Banner from "@/components/Profile/Banner";
 import Sidebar from "@/components/Profile/Sidebar";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/firebase/firebase.config";
 import { useRouter } from "next/router";
-import ProfileProducts from "@/components/Profile/ProfileProducts";
-import Image from "next/image";
 import EmptyContainer from "@/components/Profile/EmptyContainer";
 import { GrAddCircle } from "react-icons/gr";
+import Bookmarks from "@/components/Profile/Bookmarks";
+import Recent from "@/components/Profile/Recent";
 
 const Profile = () => {
   const { user } = useSelector((store) => store.userReducer);
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(0);
-  const [bookmarks, setBookmarks] = useState([]);
-
-  const getRestraunts = async (id, q) => {
-    setBookmarks([]);
-    const res = await getDoc(doc(db, q, id));
-    if (res.exists()) {
-      setBookmarks(res.data().restraunts);
-    }
-  };
-
   const handleTab = (val) => {
     setActiveTab(val);
   };
-
-  useEffect(() => {
-    if (user && user.uid && router.query.t == 4) {
-      getRestraunts(user.uid, "favourites");
-    } else if (user && user.uid && router.query.t == 3) {
-      getRestraunts(user.uid, "recent");
-    }
-  }, [user, router.query.t]);
 
   useEffect(() => {
     if (router.query.t) {
@@ -153,15 +132,19 @@ const Profile = () => {
               />
             </Box>
           </Box>
-        ) : router.query.t == 3 || router.query.t == 4 ? (
+        ) : router.query.t == 3 ? (
           <Box w={"100%"}>
             <Heading fontWeight={400}>
               {router.query.t == 3 ? "Recently Viewed" : "Bookmarks"}
             </Heading>
-            <ProfileProducts
-              bookmarks={bookmarks}
-              getRestraunts={getRestraunts}
-            />
+            <Recent />
+          </Box>
+        ) : router.query.t == 4 ? (
+          <Box w={"100%"}>
+            <Heading fontWeight={400}>
+              {router.query.t == 3 ? "Recently Viewed" : "Bookmarks"}
+            </Heading>
+            <Bookmarks />
           </Box>
         ) : router.query.t == 6 ? (
           <Box w={"100%"}>

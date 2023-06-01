@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
-import { getUserDataSuccess } from "../slices/UserSlice"
+import { AddBookmarkSuccess, AddRecentSuccess, RemoveBoookmarkSuccess, getUserDataSuccess } from "../slices/UserSlice"
 import { Auth, db } from "@/firebase/firebase.config";
 import { arrayRemove, arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
@@ -65,11 +65,12 @@ export const getInitalUser = async (id, dispatch) => {
 }
 
 
-export const AddFavouriteReq = async (id, restraunt, handleBooked) => {
+export const AddFavouriteReq = async (id, restraunt, handleBooked, dispatch) => {
     try {
         const res = await getDoc(doc(db, "users", id));
         if (res.exists()) {
             await updateDoc(doc(db, "users", id), { bookmarks: arrayUnion(restraunt) });
+            dispatch(AddBookmarkSuccess(restraunt))
             handleBooked()
         }
     } catch (error) {
@@ -77,11 +78,12 @@ export const AddFavouriteReq = async (id, restraunt, handleBooked) => {
     }
 }
 
-export const RemoveFavouriteReq = async (id, restraunt, handleRemoved) => {
+export const RemoveFavouriteReq = async (id, restraunt, handleRemoved, dispatch) => {
     try {
         const res = await getDoc(doc(db, "users", id));
         if (res.exists()) {
             await updateDoc(doc(db, "users", id), { bookmarks: arrayRemove(restraunt) });
+            dispatch(RemoveBoookmarkSuccess(restraunt))
             handleRemoved();
         }
     } catch (error) {
@@ -99,12 +101,13 @@ const AddOrderReq = async (id, item) => {
     }
 }
 
-export const AddRecentReq = async (id, restraunt) => {
+export const AddRecentReq = async (id, restraunt, dispatch) => {
     try {
         const res = await getDoc(doc(db, "users", id));
         if (res.exists()) {
             const checkArray = res.data().recent.filter((rest) => rest.id === restraunt.id)
             if (checkArray.length === 0) {
+                dispatch(AddRecentSuccess(restraunt))
                 await updateDoc(doc(db, "users", id), { recent: arrayUnion(restraunt) });
             }
         }

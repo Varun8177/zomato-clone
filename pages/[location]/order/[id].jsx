@@ -83,9 +83,9 @@ const Order = ({ restaurant }) => {
   useEffect(() => {
     if (user && user.uid && restaurant.id) {
       getRestraunts(user.uid, restaurant.id);
-      AddRecentReq(user.uid, restaurant);
+      AddRecentReq(user.uid, restaurant, dispatch);
     }
-  }, [restaurant.id, user, restaurant]);
+  }, [restaurant.id, user, restaurant, dispatch]);
   return (
     <Box>
       <DeleveryNavbar />
@@ -259,7 +259,7 @@ const Order = ({ restaurant }) => {
                     position: "top-left",
                   });
                 } else {
-                  AddFavouriteReq(user.uid, restaurant, handleBooked);
+                  AddFavouriteReq(user.uid, restaurant, handleBooked, dispatch);
                 }
               } else {
                 toast({
