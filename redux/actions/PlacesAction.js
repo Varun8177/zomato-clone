@@ -33,7 +33,7 @@ export const getLocationDetails = async (text, dispatch) => {
     }
 }
 
-export const getRestraunts = async (dispatch, controller, place) => {
+export const getRestraunts = async (dispatch, controller, place, page) => {
     dispatch(startLoading())
     try {
         const res = await axios.get(`https://developers.zomato.com/api/v2.1/locations?query=${place}`, {
@@ -46,7 +46,7 @@ export const getRestraunts = async (dispatch, controller, place) => {
         if (data) {
             const { entity_id, entity_type, title, latitude, longitude } = data.location_suggestions[0]
             try {
-                const res = await axios.get(`https://developers.zomato.com/api/v2.1/search?entity_id=${entity_id}&entity_type=${entity_type}&q=${title}&lat=${latitude}&lon=${longitude}&start=0&count=18`, {
+                const res = await axios.get(`https://developers.zomato.com/api/v2.1/search?entity_id=${entity_id}&entity_type=${entity_type}&q=${title}&lat=${latitude}&lon=${longitude}&start=${page}&count=18`, {
                     headers: {
                         "user-key": process.env.NEXT_PUBLIC_ZOMATO_USER_KEY,
                     },
@@ -54,6 +54,7 @@ export const getRestraunts = async (dispatch, controller, place) => {
                 })
                 const { data } = res
                 if (data) {
+                    console.log(data)
                     dispatch(getRestrauntSuccess(data.restaurants))
                 }
             } catch (error) {
