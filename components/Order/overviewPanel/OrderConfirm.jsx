@@ -4,7 +4,14 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { AddOrderReq } from "@/redux/actions/UserAction";
 
-const OrderConfirm = ({ handleStep, add }) => {
+const OrderConfirm = ({
+  handleStep,
+  add,
+  name,
+  price,
+  description,
+  imgURL,
+}) => {
   const dispatch = useDispatch();
   const [load, setLoad] = useState(false);
   const { user } = useSelector((store) => store.userReducer);
@@ -14,7 +21,7 @@ const OrderConfirm = ({ handleStep, add }) => {
   };
   return (
     <ModalBody>
-      <Stack w={"400px"} alignItems={"center"}>
+      <Stack w={"400px"}>
         <Box
           position={"relative"}
           w={"400px"}
@@ -23,13 +30,7 @@ const OrderConfirm = ({ handleStep, add }) => {
           rounded={"10px"}
           overflow={"hidden"}
         >
-          <Image
-            src={
-              "https://b.zmtcdn.com/data/pictures/3/50123/4c6fac32161308db080e09270cd03fcd_featured_v2.jpg"
-            }
-            alt=""
-            fill
-          />
+          <Image src={imgURL} alt="" fill />
         </Box>
         <Box>
           <Heading
@@ -38,9 +39,9 @@ const OrderConfirm = ({ handleStep, add }) => {
             fontWeight={400}
             mt={"20px"}
           >
-            Chocolate Hazelnut and Almonds Cup Ice Cream [100 ml]
+            {name}
           </Heading>
-          <Text>₹60</Text>
+          <Text>₹{price}</Text>
         </Box>
         <Box
           border={"2px solid #e8e8e8"}
@@ -57,19 +58,20 @@ const OrderConfirm = ({ handleStep, add }) => {
           <Text>{add.zip}</Text>
         </Box>
         <Button
+          textAlign={"center"}
           bgColor={"red.400"}
           color={"white"}
           mt={"10px"}
+          w={"fit-content"}
           _hover={{ bgColor: "red.500" }}
           onClick={() => {
             setLoad(true);
             AddOrderReq(
               user.uid,
               {
-                name: "Chocolate Hazelnut and Almonds Cup Ice Cream [100 ml]",
-                price: "₹60",
-                imgURL:
-                  "https://b.zmtcdn.com/data/pictures/3/50123/4c6fac32161308db080e09270cd03fcd_featured_v2.jpg",
+                name,
+                price,
+                imgURL,
                 address: add,
               },
               dispatch,

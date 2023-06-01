@@ -11,7 +11,7 @@ import Image from "next/image";
 import React from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 
-const Details = ({ handleStep }) => {
+const Details = ({ handleStep, name, price, description, imgURL }) => {
   return (
     <ModalBody>
       <Box
@@ -22,13 +22,7 @@ const Details = ({ handleStep }) => {
         rounded={"10px"}
         overflow={"hidden"}
       >
-        <Image
-          src={
-            "https://b.zmtcdn.com/data/pictures/3/50123/4c6fac32161308db080e09270cd03fcd_featured_v2.jpg"
-          }
-          alt=""
-          fill
-        />
+        <Image src={imgURL} alt="" fill />
       </Box>
       <Heading
         fontSize={{ base: "xl" }}
@@ -36,26 +30,10 @@ const Details = ({ handleStep }) => {
         fontWeight={400}
         mt={"20px"}
       >
-        Chocolate Hazelnut and Almonds Cup Ice Cream [100 ml]
+        {name}
       </Heading>
-      <Text
-        bgColor={"orange.300"}
-        pl={"5px"}
-        pr={"5px"}
-        w={"fit-content"}
-        rounded={"5px"}
-        color={"white"}
-        fontWeight={400}
-        fontSize={"12px"}
-        mt={"10px"}
-      >
-        BESTSELLER
-      </Text>
-      <Text>13 votes</Text>
-      <Text>₹60</Text>
-      <Text color={"GrayText"}>
-        Sinfully indulge with zero guilt with our no added sugar rich creamy ice
-      </Text>
+      <Text>₹{price}</Text>
+      <Text color={"GrayText"}>{description.substr(0, 200)}</Text>
       <Flex w={"100%"} justifyContent={"space-between"} alignItems={"center"}>
         <Button
           bgColor={"red.400"}

@@ -27,6 +27,7 @@ import { useRouter } from "next/router";
 import { AddFavouriteReq, AddRecentReq } from "@/redux/actions/UserAction";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase/firebase.config";
+import { FetchMealsReq } from "@/redux/actions/PlacesAction";
 
 const Order = ({ restaurant }) => {
   const router = useRouter();
@@ -39,31 +40,31 @@ const Order = ({ restaurant }) => {
     dispatch(getRestruntDetails(restaurant));
   });
 
-  const fetchDetails = async (name) => {
-    if (name) {
-      // try {
-      //   const res = await axios.get(
-      //     `https://foodiefetch.p.rapidapi.com/swiggy`,
-      //     {
-      //       params: {
-      //         query: name,
-      //       },
-      //       headers: {
-      //         "X-RapidAPI-Key":
-      //           "b8aff06a70msh62275ffba91f069p1212eajsn4fb5db6667bd",
-      //         "X-RapidAPI-Host": "foodiefetch.p.rapidapi.com",
-      //       },
-      //     }
-      //   );
-      //   const { data } = res;
-      // } catch (error) {
-      //   console.log(error);
-      // }
-    }
-  };
+  // const fetchDetails = async (name) => {
+  // if (name) {
+  // try {
+  //   const res = await axios.get(
+  //     `https://foodiefetch.p.rapidapi.com/swiggy`,
+  //     {
+  //       params: {
+  //         query: name,
+  //       },
+  //       headers: {
+  //         "X-RapidAPI-Key":
+  //           "b8aff06a70msh62275ffba91f069p1212eajsn4fb5db6667bd",
+  //         "X-RapidAPI-Host": "foodiefetch.p.rapidapi.com",
+  //       },
+  //     }
+  //   );
+  //   const { data } = res;
+  // } catch (error) {
+  //   console.log(error);
+  // }
+  // }
+  // };
   useEffect(() => {
-    fetchDetails(restaurant.name);
-  }, [restaurant.name]);
+    FetchMealsReq(dispatch);
+  }, [dispatch]);
 
   const handleBooked = () => {
     setBooked(true);

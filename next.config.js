@@ -4,7 +4,7 @@ require('dotenv').config();
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['firebasestorage.googleapis.com', 'b.zmtcdn.com'],
+    domains: ['firebasestorage.googleapis.com', 'b.zmtcdn.com', 'www.themealdb.com'],
   }
 }
 

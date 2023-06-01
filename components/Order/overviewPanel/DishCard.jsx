@@ -2,15 +2,16 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import React from "react";
 import DishImageContainer from "./DishImageContainer";
 import OrderModal from "./OrderModal";
-const DishCard = () => {
+const DishCard = ({ name, price, description, imgURL }) => {
   return (
-    <OrderModal>
+    <OrderModal
+      name={name}
+      price={price}
+      description={description}
+      imgURL={imgURL}
+    >
       <Flex w={"100%"} alignItems={"center"} gap={"20px"} cursor={"pointer"}>
-        <DishImageContainer
-          imgURL={
-            "https://b.zmtcdn.com/data/pictures/3/50123/4c6fac32161308db080e09270cd03fcd_featured_v2.jpg"
-          }
-        />
+        <DishImageContainer imgURL={imgURL} />
         <Box h={"170px"}>
           <Heading
             fontSize={{ base: "xl" }}
@@ -18,7 +19,7 @@ const DishCard = () => {
             fontWeight={400}
             mt={"20px"}
           >
-            Chocolate Hazelnut and Almonds Cup Ice Cream [100 ml]
+            {name}
           </Heading>
           <Text
             bgColor={"orange.300"}
@@ -34,11 +35,8 @@ const DishCard = () => {
             BESTSELLER
           </Text>
           <Text>13 votes</Text>
-          <Text>₹60</Text>
-          <Text color={"GrayText"}>
-            Sinfully indulge with zero guilt with our no added sugar rich creamy
-            ice
-          </Text>
+          <Text>₹{price}</Text>
+          <Text color={"GrayText"}>{`${description.substr(0, 50)}...`}</Text>
         </Box>
       </Flex>
     </OrderModal>

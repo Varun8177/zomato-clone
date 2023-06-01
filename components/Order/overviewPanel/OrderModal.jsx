@@ -14,7 +14,7 @@ import AddressForm from "./AddressForm";
 import OrderConfirm from "./OrderConfirm";
 import Success from "./Success";
 
-const OrderModal = ({ children }) => {
+const OrderModal = ({ children, name, price, description, imgURL }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [step, setStep] = useState("details");
   const [add, setAdd] = useState({});
@@ -41,13 +41,26 @@ const OrderModal = ({ children }) => {
             _focus={{ boxShadow: "none" }}
           />
           {step === "details" ? (
-            <Details handleStep={handleStep} />
+            <Details
+              handleStep={handleStep}
+              name={name}
+              price={price}
+              description={description}
+              imgURL={imgURL}
+            />
           ) : step === "address" ? (
             <Address handleStep={handleStep} handleAddress={handleAddress} />
           ) : step === "form" ? (
             <AddressForm handleStep={handleStep} />
           ) : step === "confirm" ? (
-            <OrderConfirm handleStep={handleStep} add={add} />
+            <OrderConfirm
+              handleStep={handleStep}
+              add={add}
+              name={name}
+              price={price}
+              description={description}
+              imgURL={imgURL}
+            />
           ) : step === "success" ? (
             <Success />
           ) : null}

@@ -11,7 +11,7 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.6.1",
-    "@paypal/react-paypal-js": "^7.8.3",
+    "@react-google-maps/api": "^2.18.1",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
     "dotenv": "^16.0.3",
@@ -21,6 +21,7 @@
     "next": "13.4.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-geocode": "^0.2.3",
     "react-icons": "^4.8.0",
     "react-redux": "^8.0.5",
     "redux": "^4.2.1"

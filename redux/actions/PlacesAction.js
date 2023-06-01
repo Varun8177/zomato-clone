@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getPlace, getRestrauntSuccess, getSuggestionSuccess, activateFilter, getDineOutSuccess, getCollectionSuccess, startLoading } from "../slices/PlacesSlice"
+import { getPlace, getRestrauntSuccess, getSuggestionSuccess, activateFilter, getDineOutSuccess, getCollectionSuccess, startLoading, getMealsSuccess } from "../slices/PlacesSlice"
 
 export const getLiveLocation = async (coords, dispatch, CreateQuery) => {
     const { latitude, longitude } = coords;
@@ -196,3 +196,33 @@ export const autoCompleteSearch = async (query) => {
         console.log(error);
     }
 };
+
+export const FetchMealsReq = async (dispatch) => {
+    try {
+        const res = await axios.get('https://www.themealdb.com/api/json/v1/1/categories.php')
+        const { data } = res
+        if (data) {
+            console.log(data.categories)
+            dispatch(getMealsSuccess(data.categories))
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const searchReq = async (dispatch) => {
+    try {
+        const res = await axios.get(`https://developers.zomato.com/api/v2.1/search?q=burger`, {
+            headers: {
+                "user-key": process.env.NEXT_PUBLIC_ZOMATO_USER_KEY,
+            },
+        })
+        const { data } = res
+        if (data) {
+            console.log(data)
+            // dispatch(getMealsSuccess(data.categories))
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}

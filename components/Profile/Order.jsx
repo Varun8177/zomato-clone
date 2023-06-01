@@ -23,44 +23,46 @@ const Order = () => {
         />
       ) : (
         user?.orders?.map((item, i) => (
-          <Box key={i}>
-            <Stack w={"400px"} alignItems={"center"}>
+          <Box key={i} w={"100%"} borderWidth={2} p={"10px"} rounded={"10px"}>
+            <Flex w={"100%"} alignItems={"center"} gap={"20px"}>
               <Box
                 position={"relative"}
-                w={"400px"}
-                h={"250px"}
+                w={"300px"}
+                h={"150px"}
                 m={"auto"}
                 rounded={"10px"}
                 overflow={"hidden"}
               >
                 <Image src={item.imgURL} alt="" fill />
               </Box>
-              <Box>
-                <Heading
-                  fontSize={{ base: "xl" }}
-                  w={"fit-content"}
-                  fontWeight={400}
-                  mt={"20px"}
+              <Box h={"100%"} w={"100%"}>
+                <Box>
+                  <Heading
+                    fontSize={{ base: "xl" }}
+                    w={"fit-content"}
+                    fontWeight={400}
+                    mt={"20px"}
+                  >
+                    {item.name.substr(0, 45)}
+                  </Heading>
+                  <Text>{item.price}</Text>
+                </Box>
+                <Box
+                  border={"2px solid #e8e8e8"}
+                  w={"100%"}
+                  p={"10px"}
+                  rounded={"10px"}
+                  fontSize={"12px"}
+                  cursor={"pointer"}
+                  bgColor={"red.200"}
                 >
-                  {item.name}
-                </Heading>
-                <Text>{item.price}</Text>
+                  <Text as={"b"}>{item.address.name}</Text>
+                  <Text>{item.address.mobile}</Text>
+                  <Text>{item.address.address}</Text>
+                  <Text>{item.address.zip}</Text>
+                </Box>
               </Box>
-              <Box
-                border={"2px solid #e8e8e8"}
-                w={"100%"}
-                p={"10px"}
-                rounded={"10px"}
-                fontSize={"12px"}
-                cursor={"pointer"}
-                bgColor={"red.200"}
-              >
-                <Text as={"b"}>{item.address.name}</Text>
-                <Text>{item.address.mobile}</Text>
-                <Text>{item.address.address}</Text>
-                <Text>{item.address.zip}</Text>
-              </Box>
-            </Stack>
+            </Flex>
           </Box>
         ))
       )}
