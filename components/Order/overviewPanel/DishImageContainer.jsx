@@ -5,7 +5,7 @@ import React from "react";
 const DishImageContainer = ({ imgURL }) => {
   return (
     <Box
-      w={"150px"}
+      w={"180px"}
       h={"130px"}
       rounded={"10px"}
       position={"relative"}

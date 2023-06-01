@@ -1,19 +1,51 @@
-import { Button, Flex, IconButton, ModalBody, Text } from "@chakra-ui/react";
-import React from "react";
+import {
+  Box,
+  Button,
+  Flex,
+  IconButton,
+  ModalBody,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { GrAddCircle } from "react-icons/gr";
 import { useSelector } from "react-redux";
 
-const Address = ({ handleStep }) => {
+const Address = ({ handleStep, handleAddress }) => {
   const { user } = useSelector((store) => store.userReducer);
+  const [active, setActive] = useState(0);
   console.log(user.address);
+
+  useEffect(() => {
+    if (user) {
+      handleAddress(user.address[active]);
+    }
+  }, [active, handleAddress, user]);
   return (
     <ModalBody>
-      <Flex
-        w={"100%"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-        direction={"column"}
-      >
+      <Stack w={"400px"} alignItems={"center"}>
+        {user?.address?.map((item, i) => {
+          return (
+            <Box
+              key={i}
+              border={"2px solid #e8e8e8"}
+              w={"100%"}
+              p={"10px"}
+              rounded={"10px"}
+              fontSize={"12px"}
+              cursor={"pointer"}
+              bgColor={active === i ? "red.200" : "white"}
+              onClick={() => {
+                setActive(i);
+              }}
+            >
+              <Text as={"b"}>{item.name}</Text>
+              <Text>{item.mobile}</Text>
+              <Text>{item.address}</Text>
+              <Text>{item.zip}</Text>
+            </Box>
+          );
+        })}
         <Flex
           w={"250px"}
           h={"100px"}
@@ -25,6 +57,9 @@ const Address = ({ handleStep }) => {
           direction={"column"}
           cursor={"pointer"}
           _hover={{ bgColor: "#e8e8e8" }}
+          onClick={() => {
+            handleStep("form");
+          }}
         >
           <IconButton
             bg={"transparent"}
@@ -40,12 +75,12 @@ const Address = ({ handleStep }) => {
           mt={"10px"}
           _hover={{ bgColor: "red.500" }}
           onClick={() => {
-            handleStep("address");
+            handleStep("confirm");
           }}
         >
           Proceed
         </Button>
-      </Flex>
+      </Stack>
     </ModalBody>
   );
 };

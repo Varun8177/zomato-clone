@@ -34,7 +34,7 @@ const Bookmarks = () => {
           }
         />
       ) : (
-        user.bookmarks?.map((rest, i) => (
+        user?.bookmarks?.map((rest, i) => (
           <Box key={rest.id} position={"relative"}>
             <ProductCards
               res_id={rest.R.res_id}

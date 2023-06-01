@@ -1,32 +1,28 @@
 import {
   Box,
-  Button,
-  Flex,
-  Heading,
-  IconButton,
   Modal,
-  ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import DishImageContainer from "./DishImageContainer";
-import Image from "next/image";
-import { AiOutlineHeart } from "react-icons/ai";
 import Details from "./Details";
 import Address from "./Address";
+import AddressForm from "./AddressForm";
+import OrderConfirm from "./OrderConfirm";
+import Success from "./Success";
 
 const OrderModal = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [step, setStep] = useState("details");
-  const dispatch = useDispatch();
+  const [add, setAdd] = useState({});
   const handleStep = (val) => {
     setStep(val);
+  };
+  const handleAddress = (val) => {
+    setAdd(val);
   };
   return (
     <>
@@ -46,9 +42,15 @@ const OrderModal = ({ children }) => {
           />
           {step === "details" ? (
             <Details handleStep={handleStep} />
-          ) : (
-            <Address handleStep={handleStep} />
-          )}
+          ) : step === "address" ? (
+            <Address handleStep={handleStep} handleAddress={handleAddress} />
+          ) : step === "form" ? (
+            <AddressForm handleStep={handleStep} />
+          ) : step === "confirm" ? (
+            <OrderConfirm handleStep={handleStep} add={add} />
+          ) : step === "success" ? (
+            <Success />
+          ) : null}
         </ModalContent>
       </Modal>
     </>

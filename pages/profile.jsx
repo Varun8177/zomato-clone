@@ -17,6 +17,8 @@ import EmptyContainer from "@/components/Profile/EmptyContainer";
 import { GrAddCircle } from "react-icons/gr";
 import Bookmarks from "@/components/Profile/Bookmarks";
 import Recent from "@/components/Profile/Recent";
+import Order from "@/components/Profile/Order";
+import Address from "@/components/Profile/Address";
 
 const Profile = () => {
   const { user } = useSelector((store) => store.userReducer);
@@ -150,11 +152,7 @@ const Profile = () => {
           <Box w={"100%"}>
             <Heading fontWeight={400}>My Addresses</Heading>
             <Box w={"100%"} mt={"20px"}>
-              <EmptyContainer
-                imgURL={
-                  "https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/empty%2Fenpty-address.webp?alt=media&token=eb4fde45-a456-4d04-9533-6ac6f1f3e7f0"
-                }
-              />
+              <Address />
               <Flex
                 w={"250px"}
                 h={"200px"}
@@ -166,6 +164,8 @@ const Profile = () => {
                 direction={"column"}
                 cursor={"pointer"}
                 _hover={{ bgColor: "#e8e8e8" }}
+                m={"auto"}
+                mt={"30px"}
               >
                 <IconButton
                   bg={"transparent"}
@@ -189,11 +189,7 @@ const Profile = () => {
         ) : router.query.t == 5 ? (
           <Box w={"100%"}>
             <Heading fontWeight={400}>Order History</Heading>
-            <EmptyContainer
-              imgURL={
-                "https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/empty%2Fenpty-fav.webp?alt=media&token=bf5883da-1920-40c0-b85d-c7ecf424a07a"
-              }
-            />
+            <Order />
           </Box>
         ) : null}
       </Flex>

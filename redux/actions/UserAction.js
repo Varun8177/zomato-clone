@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
-import { AddBookmarkSuccess, AddRecentSuccess, RemoveBoookmarkSuccess, getUserDataSuccess } from "../slices/UserSlice"
+import { AddAddressSuccess, AddBookmarkSuccess, AddOrderSuccess, AddRecentSuccess, RemoveBoookmarkSuccess, getUserDataSuccess } from "../slices/UserSlice"
 import { Auth, db } from "@/firebase/firebase.config";
 import { arrayRemove, arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
@@ -9,8 +9,13 @@ export const VerifyUser = async (dispatch) => {
         const res = await signInWithPopup(Auth, new GoogleAuthProvider())
         const { user } = res;
         if (user) {
-            await setDoc(doc(db, "users", user.uid), { bookmarks: [], recent: [], orders: [], uid: user.uid, displayName: user.displayName, phoneNumber: user.phoneNumber, email: user.email, photoURL: user.photoURL });
-            dispatch(getUserDataSuccess(user))
+            const check = await getDoc(doc(db, "users", user.uid));
+            if (!check.exists()) {
+                await setDoc(doc(db, "users", user.uid), { address: [], bookmarks: [], recent: [], orders: [], uid: user.uid, displayName: user.displayName, phoneNumber: user.phoneNumber, email: user.email, photoURL: user.photoURL });
+                dispatch(getUserDataSuccess(user))
+            } else {
+                dispatch(getUserDataSuccess(check.data()))
+            }
         }
     } catch (error) {
         console.log(error)
@@ -40,7 +45,7 @@ export const CreateUserEmail = async (name, email, password, phone, CustomToast,
         if (user) {
             const updatedUser = { ...user, displayName: name, phoneNumber: phone }
             try {
-                await setDoc(doc(db, "users", user.uid), { bookmarks: [], recent: [], orders: [], uid: user.uid, displayName: name, phoneNumber: phone, email: user.email, photoURL: user.photoURL });
+                await setDoc(doc(db, "users", user.uid), { address: [], bookmarks: [], recent: [], orders: [], uid: user.uid, displayName: name, phoneNumber: phone, email: user.email, photoURL: user.photoURL });
                 dispatch(getUserDataSuccess(updatedUser))
                 CustomToast("account created successfully", "", "success");
                 onClose();
@@ -91,16 +96,6 @@ export const RemoveFavouriteReq = async (id, restraunt, handleRemoved, dispatch)
     }
 }
 
-
-const AddOrderReq = async (id, item) => {
-    try {
-        const res = await setDoc(doc(db, "orders", id), item);
-        console.log(res)
-    } catch (error) {
-        console.log(error)
-    }
-}
-
 export const AddRecentReq = async (id, restraunt, dispatch) => {
     try {
         const res = await getDoc(doc(db, "users", id));
@@ -110,6 +105,32 @@ export const AddRecentReq = async (id, restraunt, dispatch) => {
                 dispatch(AddRecentSuccess(restraunt))
                 await updateDoc(doc(db, "users", id), { recent: arrayUnion(restraunt) });
             }
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const AddAddressReq = async (id, add, dispatch, handleSuccess) => {
+    try {
+        const res = await getDoc(doc(db, "users", id));
+        if (res.exists()) {
+            await updateDoc(doc(db, "users", id), { address: arrayUnion(add) });
+            dispatch(AddAddressSuccess(add))
+            handleSuccess()
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const AddOrderReq = async (id, add, dispatch, handleSuccess) => {
+    try {
+        const res = await getDoc(doc(db, "users", id));
+        if (res.exists()) {
+            await updateDoc(doc(db, "users", id), { orders: arrayUnion(add) });
+            dispatch(AddOrderSuccess(add))
+            handleSuccess()
         }
     } catch (error) {
         console.log(error)
