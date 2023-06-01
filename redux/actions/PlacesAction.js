@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getPlace, getRestrauntSuccess, getSuggestionSuccess, activateFilter, getDineOutSuccess, getCollectionSuccess, startLoading } from "../slices/PlacesSlice"
+import { getPlace, getRestrauntSuccess, getSuggestionSuccess, activateFilter, getDineOutSuccess, getCollectionSuccess, startLoading, getMealsSuccess } from "../slices/PlacesSlice"
 
 export const getLiveLocation = async (coords, dispatch, CreateQuery) => {
     const { latitude, longitude } = coords;
@@ -33,7 +33,7 @@ export const getLocationDetails = async (text, dispatch) => {
     }
 }
 
-export const getRestraunts = async (dispatch, controller, place) => {
+export const getRestraunts = async (dispatch, controller, place, page) => {
     dispatch(startLoading())
     try {
         const res = await axios.get(`https://developers.zomato.com/api/v2.1/locations?query=${place}`, {
@@ -46,7 +46,7 @@ export const getRestraunts = async (dispatch, controller, place) => {
         if (data) {
             const { entity_id, entity_type, title, latitude, longitude } = data.location_suggestions[0]
             try {
-                const res = await axios.get(`https://developers.zomato.com/api/v2.1/search?entity_id=${entity_id}&entity_type=${entity_type}&q=${title}&lat=${latitude}&lon=${longitude}&start=0&count=18`, {
+                const res = await axios.get(`https://developers.zomato.com/api/v2.1/search?entity_id=${entity_id}&entity_type=${entity_type}&q=${title}&lat=${latitude}&lon=${longitude}&start=${page}&count=18`, {
                     headers: {
                         "user-key": process.env.NEXT_PUBLIC_ZOMATO_USER_KEY,
                     },
@@ -54,6 +54,7 @@ export const getRestraunts = async (dispatch, controller, place) => {
                 })
                 const { data } = res
                 if (data) {
+                    console.log(data)
                     dispatch(getRestrauntSuccess(data.restaurants))
                 }
             } catch (error) {
@@ -195,3 +196,33 @@ export const autoCompleteSearch = async (query) => {
         console.log(error);
     }
 };
+
+export const FetchMealsReq = async (dispatch) => {
+    try {
+        const res = await axios.get('https://www.themealdb.com/api/json/v1/1/categories.php')
+        const { data } = res
+        if (data) {
+            console.log(data.categories)
+            dispatch(getMealsSuccess(data.categories))
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const searchReq = async (dispatch) => {
+    try {
+        const res = await axios.get(`https://developers.zomato.com/api/v2.1/search?q=burger`, {
+            headers: {
+                "user-key": process.env.NEXT_PUBLIC_ZOMATO_USER_KEY,
+            },
+        })
+        const { data } = res
+        if (data) {
+            console.log(data)
+            // dispatch(getMealsSuccess(data.categories))
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}

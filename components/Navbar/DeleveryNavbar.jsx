@@ -28,6 +28,7 @@ import { getPlace } from "@/redux/slices/PlacesSlice";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { Auth } from "@/firebase/firebase.config";
 import { getUserDataSuccess } from "@/redux/slices/UserSlice";
+import { getInitalUser } from "@/redux/actions/UserAction";
 
 const DeleveryNavbar = () => {
   const { place } = useSelector((state) => state.placeReducer);
@@ -55,10 +56,19 @@ const DeleveryNavbar = () => {
     };
   }, [dispatch, router.query.location]);
 
-  const options = ["profile", "bookmarks", "reviews", "settings"];
+  const options = [
+    { name: "profile", link: "/profile?t=0" },
+    { name: "bookmarks", link: "/profile?t=4" },
+    { name: "recently viewed", link: "/profile?t=3" },
+    { name: "order history", link: "/profile?t=5" },
+  ];
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(Auth, (user) => {
-      dispatch(getUserDataSuccess(user));
+      if (user) {
+        getInitalUser(user.uid, dispatch);
+      } else {
+        dispatch(getUserDataSuccess(null));
+      }
     });
     return () => {
       unSubscribe();
@@ -195,8 +205,9 @@ const DeleveryNavbar = () => {
                         textAlign={"left"}
                         w={"fit-content"}
                         _hover={{ bgColor: "transparent" }}
+                        onClick={() => router.push(text.link)}
                       >
-                        {text}
+                        {text.name}
                       </MenuItem>
                     );
                   })}

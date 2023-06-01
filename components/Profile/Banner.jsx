@@ -14,7 +14,7 @@ const Banner = () => {
       m={"auto"}
       h={{ base: "200px", md: "200px" }}
       bgImage={
-        "https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/profile-banner.webp?alt=media&token=2831b4a0-8885-46e8-ab73-cd9fded70099"
+        "https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/profile-banner2.jpg?alt=media&token=1832ba80-166f-4dc3-bc2a-3a9420a37ea6"
       }
       backgroundSize={"cover"}
       gap={5}
@@ -38,6 +38,7 @@ const Banner = () => {
             bgColor={"red.400"}
             color={"white"}
             mb={"20px"}
+            _hover={{ bgColor: "red.500" }}
           >
             Edit Profile
           </Button>

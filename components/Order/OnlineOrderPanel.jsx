@@ -1,8 +1,10 @@
-import { Box, Checkbox, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Checkbox, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import DishCard from "./overviewPanel/DishCard";
+import { useSelector } from "react-redux";
 
 const OnlineOrderPanel = () => {
+  const { meals } = useSelector((state) => state.placeReducer);
   return (
     <Box>
       <Flex w={"100%"} flexWrap={"wrap"} gap={"20px"} mb={"10px"}>
@@ -24,9 +26,19 @@ const OnlineOrderPanel = () => {
           );
         })}
       </Flex>
-      <Checkbox fontSize={"15px"} color={"GrayText"}>
-        Veg Only
-      </Checkbox>
+      <Stack
+        spacing={[5, 5]}
+        direction={["column", "row"]}
+        flexWrap={"wrap"}
+        gap="40px"
+      >
+        {meals?.map((item, i) => (
+          <Checkbox key={i} fontSize={"15px"} color={"GrayText"}>
+            {item.strCategory}
+          </Checkbox>
+        ))}
+      </Stack>
+
       <Heading
         fontSize={{ base: "2xl" }}
         w={"fit-content"}
@@ -36,8 +48,16 @@ const OnlineOrderPanel = () => {
       >
         Recommended
       </Heading>
-      {new Array(5).fill(0).map((item, i) => {
-        return <DishCard key={i} />;
+      {meals?.map((item, i) => {
+        return (
+          <DishCard
+            description={item.strCategoryDescription}
+            imgURL={item.strCategoryThumb}
+            key={i}
+            name={item.strCategory}
+            price={Math.random().toString().substr(2, 2)}
+          />
+        );
       })}
     </Box>
   );

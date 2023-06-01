@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Box,
   Button,
   Flex,
   Menu,
@@ -10,31 +9,39 @@ import {
   Show,
   Text,
 } from "@chakra-ui/react";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import LoginModal from "./Navbar/LoginModal";
 import SignupModal from "./Navbar/SignupModal";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { Auth } from "@/firebase/firebase.config";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserDataSuccess } from "@/redux/slices/UserSlice";
 import { useRouter } from "next/router";
+import { getInitalUser } from "@/redux/actions/UserAction";
+import { getUserDataSuccess } from "@/redux/slices/UserSlice";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.userReducer);
   const dispatch = useDispatch();
-  const options = ["profile", "bookmarks", "reviews", "settings"];
+  const options = [
+    { name: "profile", link: "/profile?t=0" },
+    { name: "bookmarks", link: "/profile?t=4" },
+    { name: "recently viewed", link: "/profile?t=3" },
+    { name: "order history", link: "/profile?t=5" },
+  ];
   const router = useRouter();
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(Auth, (user) => {
-      dispatch(getUserDataSuccess(user));
+      if (user) {
+        getInitalUser(user.uid, dispatch);
+      } else {
+        dispatch(getUserDataSuccess(null));
+      }
     });
     return () => {
       unSubscribe();
     };
   }, [dispatch]);
-  console.log(user);
   return (
     <Flex alignItems={"center"} h={"80px"} bg={"transparent"} color={"white"}>
       <Flex
@@ -104,9 +111,9 @@ const Navbar = () => {
                           textAlign={"left"}
                           w={"fit-content"}
                           _hover={{ bgColor: "transparent" }}
-                          onClick={() => router.push("/profile")}
+                          onClick={() => router.push(text.link)}
                         >
-                          {text}
+                          {text.name}
                         </MenuItem>
                       );
                     })}
