@@ -69,17 +69,19 @@ const Address = ({ handleStep, handleAddress }) => {
           />
           <Text as={"b"}>Add Address</Text>
         </Flex>
-        <Button
-          bgColor={"red.400"}
-          color={"white"}
-          mt={"10px"}
-          _hover={{ bgColor: "red.500" }}
-          onClick={() => {
-            handleStep("confirm");
-          }}
-        >
-          Proceed
-        </Button>
+        {user.address.length <= 0 ? null : (
+          <Button
+            bgColor={"red.400"}
+            color={"white"}
+            mt={"10px"}
+            _hover={{ bgColor: "red.500" }}
+            onClick={() => {
+              handleStep("confirm");
+            }}
+          >
+            Proceed
+          </Button>
+        )}
       </Stack>
     </ModalBody>
   );

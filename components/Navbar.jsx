@@ -23,7 +23,12 @@ import { getUserDataSuccess } from "@/redux/slices/UserSlice";
 const Navbar = () => {
   const { user } = useSelector((store) => store.userReducer);
   const dispatch = useDispatch();
-  const options = ["profile", "bookmarks", "reviews", "settings"];
+  const options = [
+    { name: "profile", link: "/profile?t=0" },
+    { name: "bookmarks", link: "/profile?t=4" },
+    { name: "recently viewed", link: "/profile?t=3" },
+    { name: "order history", link: "/profile?t=5" },
+  ];
   const router = useRouter();
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(Auth, (user) => {
@@ -106,9 +111,9 @@ const Navbar = () => {
                           textAlign={"left"}
                           w={"fit-content"}
                           _hover={{ bgColor: "transparent" }}
-                          onClick={() => router.push("/profile?t=0")}
+                          onClick={() => router.push(text.link)}
                         >
-                          {text}
+                          {text.name}
                         </MenuItem>
                       );
                     })}
