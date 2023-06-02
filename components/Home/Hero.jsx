@@ -17,7 +17,6 @@ import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
 import { IoMdLocate } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  autoCompleteSearch,
   getLiveLocation,
   getLocationDetails,
   searchReq,

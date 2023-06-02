@@ -1,38 +1,90 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Zomato Clone
 
-## Getting Started
+## Description
 
-First, run the development server:
+Zomato clone is a clone of zomato.com which provides users with a convenient and reliable solution for finding restaurants and ordering food online.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+## Teck stacks used
+
+- Next.js (as a frontend framework).
+- Chakra UI (for styling).
+- firebase (for authentication and database).
+- reduxjs/toolkit (for global state management).
+- axios (for fetching data)
+- react-google-maps/api (for map integration on restraunt details page).
+- react-icons (for icons).
+
+## Installation
+
+1. Clone this repo to your local machine using 
+```
+git clone https://github.com/Varun8177/zomato-clone.git
+```
+2. Go to the folder where you cloned this repo and install dependencies using 
+```
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Run the project in developer mode using 
+```
+npm run dev
+```
+4. Run the project in production mode
+```
+npm run start
+```
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Features
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+`security`
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- user authentication (there are three methods to authenticate a user)
+  - google authentication.
+  - email and password authentication.
+  - OTP authentication using mobile number.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+`user experience`
 
-## Learn More
+- user gets a minimal designed UI (based on zomato design).
+- user gets the restraunts data based on their location.
+- user gets the single restraunt page which contains details of a particular restraunt.
+- user can bookmark any restraunt and it will be visible on his profile page.
+- when a user clicks on any product from the single product page it will show more details about it and user can order it.
+- while ordering a product user can add a new address or select previous addresses if any.
+- Location of user
+  - can get his current location.
+  - can search for a desired location.
+- Methods for user.
+  - sorting data based on popularity,rating
+  - filtering data based on their cuisines.
+  - search for restraunts based on location.
+  - pagination to go to another page.
+- Dashboard for user.
+  - can check out his recently viewed restraunts.
+  - can check the orders history and its details when clicked on it.
+  - can check the bookmarks and remove if want to.
+  - can check his added adressess.
+- user gets form validation and errors will be notified via toasts if something went wrong.
 
-To learn more about Next.js, take a look at the following resources:
+## screenshots
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Home Page
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+![homepage](https://github.com/Varun8177/zomato-clone/assets/112754116/8d9a8cb0-5cf5-4435-b38f-a79f66d6f60b)
 
-## Deploy on Vercel
+### Restraunts page
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![restraunts1](https://github.com/Varun8177/zomato-clone/assets/112754116/42ea0c12-4b72-454e-bf15-ea90e5ff867f)
+![restraunts2](https://github.com/Varun8177/zomato-clone/assets/112754116/cdc87e7d-413e-4358-8738-e1790fa9ba27)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Restraunt Details page
+
+![details](https://github.com/Varun8177/zomato-clone/assets/112754116/beac6fd9-7f69-4868-85f5-aa8231c0ebd3)
+
+### User Dashboard or profile page
+
+![profile](https://github.com/Varun8177/zomato-clone/assets/112754116/f3cb3c97-1760-478e-a8e5-af1e80755245)
+
+## Made by
+
+Varun Ergurala
