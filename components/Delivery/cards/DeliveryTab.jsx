@@ -76,19 +76,6 @@ const DeliveryTab = () => {
             <MenuItem>Download</MenuItem>
           </MenuList>
         </Menu>
-        <Menu>
-          <MenuButton
-            as={Button}
-            rightIcon={<ChevronDownIcon />}
-            variant={"outline"}
-            color={"GrayText"}
-          >
-            More Filters
-          </MenuButton>
-          <MenuList>
-            <MenuItem>Download</MenuItem>
-          </MenuList>
-        </Menu>
       </Flex>
     </TabPanel>
   );
