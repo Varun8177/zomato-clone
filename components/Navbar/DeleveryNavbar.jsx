@@ -166,57 +166,23 @@ const DeleveryNavbar = () => {
           </Menu>
           <Divider orientation="vertical" p={"2"} h={"20px"} />
 
-          <Box>
-            <InputGroup position={"relative"}>
-              <InputLeftElement pointerEvents="none">
-                {<SearchIcon color="gray.300" />}
-              </InputLeftElement>
-              <Input
-                borderLeftRadius={"0"}
-                variant={"filled"}
-                type="tel"
-                placeholder="search for restaurant, cuisine or a dish"
-                bgColor={"white"}
-                _hover={{ bgColor: "white" }}
-                _focus={{ bgColor: "white" }}
-                border={"none"}
-                color={"black"}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </InputGroup>
-            {restraunts.length > 0 && (
-              <Box
-                position={"absolute"}
-                bgColor={"white"}
-                w={"455px"}
-                maxH={"300px"}
-                h={"fit-content"}
-                overflow={"auto"}
-                zIndex={9}
-                p={"10px"}
-              >
-                {restraunts?.map((item, i) => {
-                  return (
-                    <Text
-                      zIndex={9}
-                      key={i}
-                      color={"black"}
-                      mb={"10px"}
-                      cursor={"pointer"}
-                      onClick={() => {
-                        router.push(
-                          `/${item.restaurant.location.city}/order/${item.restaurant.R.res_id}`
-                        );
-                      }}
-                    >
-                      {item.restaurant.name} ,
-                      <span>{item.restaurant.location.city}</span>
-                    </Text>
-                  );
-                })}
-              </Box>
-            )}
-          </Box>
+          <InputGroup position={"relative"}>
+            <InputLeftElement pointerEvents="none">
+              {<SearchIcon color="gray.300" />}
+            </InputLeftElement>
+            <Input
+              borderLeftRadius={"0"}
+              variant={"filled"}
+              type="tel"
+              placeholder="search for restaurant, cuisine or a dish"
+              bgColor={"white"}
+              _hover={{ bgColor: "white" }}
+              _focus={{ bgColor: "white" }}
+              border={"none"}
+              color={"black"}
+              // onChange={(e) => setSearch(e.target.value)}
+            />
+          </InputGroup>
         </Flex>
         <Show above="lg">
           {!user ? (
