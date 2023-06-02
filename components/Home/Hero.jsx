@@ -119,7 +119,7 @@ const Hero = () => {
           lg: "2xl",
         }}
       >
-        Discover the best food & drinks in Nagpur
+        Discover the best food & drinks in {place ? place : "your city"}
       </Heading>
       <Flex
         w={{
@@ -198,8 +198,8 @@ const Hero = () => {
               : null}
           </MenuList>
         </Menu>
-        <Box>
-          <InputGroup position={"relative"}>
+        <Box w={"100%"} position={"relative"}>
+          <InputGroup>
             <InputLeftElement pointerEvents="none">
               {<SearchIcon color="gray.300" />}
             </InputLeftElement>
@@ -220,7 +220,8 @@ const Hero = () => {
             <Box
               position={"absolute"}
               bgColor={"white"}
-              w={"455px"}
+              // w={"455px"}
+              w={"101%"}
               maxH={"300px"}
               h={"fit-content"}
               overflow={"auto"}
