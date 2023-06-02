@@ -119,7 +119,7 @@ const Hero = () => {
           lg: "2xl",
         }}
       >
-        Discover the best food & drinks in Nagpur
+        Discover the best food & drinks in {place ? place : "your city"}
       </Heading>
       <Flex
         w={{

@@ -15,7 +15,7 @@ const Collections = () => {
     };
   }, [dispatch, place]);
   return (
-    <Box w={{ base: "100%", lg: "70%" }} m={"auto"} mt={"20px"}>
+    <Box w={{ base: "100%", lg: "70%" }} m={"auto"} mt={"50px"}>
       <Heading
         fontSize={{ base: "2xl", md: "3xl" }}
         m={{ base: "auto", lg: "0" }}

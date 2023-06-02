@@ -26,7 +26,9 @@ export default function Home() {
       <Options />
       <Collections />
       <Localities />
+      <Explore />
     </>
   )
 }
-import React from "react";
+import React from "react"; import Explore from '@/components/Home/Explore'
+
