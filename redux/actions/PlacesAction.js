@@ -213,18 +213,26 @@ export const FetchMealsReq = async (dispatch) => {
     }
 }
 
-export const searchReq = async (dispatch, term) => {
-    try {
-        const res = await axios.get(`https://developers.zomato.com/api/v2.1/search?q=${term}`, {
-            headers: {
-                "user-key": process.env.NEXT_PUBLIC_ZOMATO_USER_KEY,
-            },
-        })
-        const { data } = res
-        if (data) {
-            dispatch(getRestrauntSuccess(data.restaurants))
+export const searchReq = async (dispatch, term, place) => {
+    if (place) {
+        FilterRestaurants(term, dispatch, place)
+    } else {
+        try {
+            const res = await axios.get(
+                `https://developers.zomato.com/api/v2.1/search?&q=${term}`,
+                {
+                    headers: {
+                        "user-key": process.env.NEXT_PUBLIC_ZOMATO_USER_KEY,
+                    },
+                }
+            );
+            const { data } = res;
+            if (data) {
+                dispatch(getRestrauntSuccess(data.restaurants));
+            }
+        } catch (error) {
+            console.log(error);
         }
-    } catch (error) {
-        console.log(error)
     }
-}
+
+};

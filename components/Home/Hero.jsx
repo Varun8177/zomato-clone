@@ -75,7 +75,7 @@ const Hero = () => {
   const handleSearch = (search, dispatch) => {
     const timeout = setTimeout(() => {
       if (search.length > 0) {
-        searchReq(dispatch, search);
+        searchReq(dispatch, search, place);
       }
     }, 600);
     return timeout;
@@ -92,7 +92,9 @@ const Hero = () => {
 
   useEffect(() => {
     let timeoutId = handleSearch(search, dispatch);
-    dispatch(getRestrauntSuccess([]));
+    if (search.length === 0) {
+      dispatch(getRestrauntSuccess([]));
+    }
     return () => {
       console.log("cleanup done for search");
       clearTimeout(timeoutId);
@@ -217,10 +219,10 @@ const Hero = () => {
           {restraunts.length > 0 && (
             <Box
               position={"absolute"}
-              h={"200px"}
               bgColor={"white"}
               w={"455px"}
               maxH={"300px"}
+              h={"fit-content"}
               overflow={"auto"}
               zIndex={9}
               p={"10px"}
