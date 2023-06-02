@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Box,
   Button,
   Flex,
   Heading,
@@ -19,6 +20,7 @@ import {
   autoCompleteSearch,
   getLiveLocation,
   getLocationDetails,
+  searchReq,
 } from "@/redux/actions/PlacesAction";
 import { useRouter } from "next/router";
 import {
@@ -26,13 +28,14 @@ import {
   getSuggestionSuccess,
   startLocationLoading,
 } from "@/redux/slices/PlacesSlice";
+import { getRestrauntSuccess } from "@/redux/slices/PlacesSlice";
 
 const Hero = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [text, setText] = useState("");
   const [search, setSearch] = useState("");
-  const { place, suggestions, locationLoad } = useSelector(
+  const { place, suggestions, locationLoad, restraunts } = useSelector(
     (state) => state.placeReducer
   );
   useEffect(() => {
@@ -58,6 +61,7 @@ const Hero = () => {
       });
     }
   };
+  console.log(restraunts);
 
   const handleChange = (text, dispatch) => {
     const timeout = setTimeout(() => {
@@ -71,7 +75,7 @@ const Hero = () => {
   const handleSearch = (search, dispatch) => {
     const timeout = setTimeout(() => {
       if (search.length > 0) {
-        autoCompleteSearch(search);
+        searchReq(dispatch, search, place);
       }
     }, 600);
     return timeout;
@@ -88,7 +92,9 @@ const Hero = () => {
 
   useEffect(() => {
     let timeoutId = handleSearch(search, dispatch);
-
+    if (search.length === 0) {
+      dispatch(getRestrauntSuccess([]));
+    }
     return () => {
       console.log("cleanup done for search");
       clearTimeout(timeoutId);
@@ -192,23 +198,57 @@ const Hero = () => {
               : null}
           </MenuList>
         </Menu>
-        <InputGroup>
-          <InputLeftElement pointerEvents="none">
-            {<SearchIcon color="gray.300" />}
-          </InputLeftElement>
-          <Input
-            borderLeftRadius={"0"}
-            variant={"filled"}
-            type="tel"
-            placeholder="search for restaurant, cuisine or a dish"
-            bgColor={"white"}
-            _hover={{ bgColor: "white" }}
-            _focus={{ bgColor: "white" }}
-            border={"none"}
-            color={"black"}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </InputGroup>
+        <Box>
+          <InputGroup position={"relative"}>
+            <InputLeftElement pointerEvents="none">
+              {<SearchIcon color="gray.300" />}
+            </InputLeftElement>
+            <Input
+              borderLeftRadius={"0"}
+              variant={"filled"}
+              type="tel"
+              placeholder="search for restaurant, cuisine or a dish"
+              bgColor={"white"}
+              _hover={{ bgColor: "white" }}
+              _focus={{ bgColor: "white" }}
+              border={"none"}
+              color={"black"}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </InputGroup>
+          {restraunts.length > 0 && (
+            <Box
+              position={"absolute"}
+              bgColor={"white"}
+              w={"455px"}
+              maxH={"300px"}
+              h={"fit-content"}
+              overflow={"auto"}
+              zIndex={9}
+              p={"10px"}
+            >
+              {restraunts?.map((item, i) => {
+                return (
+                  <Text
+                    zIndex={9}
+                    key={i}
+                    color={"black"}
+                    mb={"10px"}
+                    cursor={"pointer"}
+                    onClick={() => {
+                      router.push(
+                        `/${item.restaurant.location.city}/order/${item.restaurant.R.res_id}`
+                      );
+                    }}
+                  >
+                    {item.restaurant.name} ,
+                    <span>{item.restaurant.location.city}</span>
+                  </Text>
+                );
+              })}
+            </Box>
+          )}
+        </Box>
       </Flex>
     </Flex>
   );

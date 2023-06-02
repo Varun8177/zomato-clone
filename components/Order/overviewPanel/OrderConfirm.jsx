@@ -1,20 +1,29 @@
-import { Box, Button, Heading, ModalBody, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  ModalBody,
+  Stack,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { AddOrderReq } from "@/redux/actions/UserAction";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
-const OrderConfirm = ({
-  handleStep,
-  add,
-  name,
-  price,
-  description,
-  imgURL,
-}) => {
+const OrderConfirm = ({ handleStep, add, name, price, imgURL }) => {
   const dispatch = useDispatch();
   const [load, setLoad] = useState(false);
   const { user } = useSelector((store) => store.userReducer);
+  const toast = useToast();
+  const [selected, setSelected] = useState(false);
   const handleSuccess = () => {
     handleStep("success");
     setLoad(false);
@@ -32,17 +41,35 @@ const OrderConfirm = ({
         >
           <Image src={imgURL} alt="" fill />
         </Box>
-        <Box>
-          <Heading
-            fontSize={{ base: "xl" }}
-            w={"fit-content"}
-            fontWeight={400}
-            mt={"20px"}
-          >
-            {name}
-          </Heading>
-          <Text>₹{price}</Text>
-        </Box>
+        <Flex alignItems={"center"} w={"100%"} justifyContent={"space-between"}>
+          <Box>
+            <Heading
+              fontSize={{ base: "xl" }}
+              w={"fit-content"}
+              fontWeight={400}
+              mt={"20px"}
+            >
+              {name}
+            </Heading>
+            <Text>₹{price}</Text>
+          </Box>
+          <Menu>
+            <MenuButton
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+              bgColor={"white"}
+              _hover={{ bgColor: "white" }}
+            >
+              {selected ? "Cash on delivery" : "Available payment options"}
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => setSelected(true)}>
+                Cash on delivery
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </Flex>
+
         <Box
           border={"2px solid #e8e8e8"}
           w={"100%"}
@@ -65,18 +92,28 @@ const OrderConfirm = ({
           w={"fit-content"}
           _hover={{ bgColor: "red.500" }}
           onClick={() => {
-            setLoad(true);
-            AddOrderReq(
-              user.uid,
-              {
-                name,
-                price,
-                imgURL,
-                address: add,
-              },
-              dispatch,
-              handleSuccess
-            );
+            if (selected) {
+              setLoad(true);
+              AddOrderReq(
+                user.uid,
+                {
+                  name,
+                  price,
+                  imgURL,
+                  address: add,
+                },
+                dispatch,
+                handleSuccess
+              );
+            } else {
+              toast.closeAll();
+              toast({
+                title: "please select a payment method",
+                status: "error",
+                position: "top-left",
+                isClosable: true,
+              });
+            }
           }}
           isLoading={load}
         >

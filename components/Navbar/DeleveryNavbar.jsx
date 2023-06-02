@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
@@ -24,17 +24,20 @@ import SignupModal from "./SignupModal";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { getPlace } from "@/redux/slices/PlacesSlice";
+import { getPlace, getRestrauntSuccess } from "@/redux/slices/PlacesSlice";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { Auth } from "@/firebase/firebase.config";
 import { getUserDataSuccess } from "@/redux/slices/UserSlice";
 import { getInitalUser } from "@/redux/actions/UserAction";
+import { searchReq } from "@/redux/actions/PlacesAction";
 
 const DeleveryNavbar = () => {
-  const { place } = useSelector((state) => state.placeReducer);
+  const { place, restraunts } = useSelector((state) => state.placeReducer);
   const { user } = useSelector((store) => store.userReducer);
   const router = useRouter();
   const dispatch = useDispatch();
+  const [search, setSearch] = useState("");
+
   const handleClick = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((positions) => {
@@ -48,6 +51,7 @@ const DeleveryNavbar = () => {
       });
     }
   };
+
   useEffect(() => {
     let sub = true;
     dispatch(getPlace(router.query.location));
@@ -75,6 +79,25 @@ const DeleveryNavbar = () => {
     };
   }, [dispatch]);
 
+  const handleSearch = (search, dispatch) => {
+    const timeout = setTimeout(() => {
+      if (search.length > 0) {
+        searchReq(dispatch, search, place);
+      }
+    }, 600);
+    return timeout;
+  };
+
+  useEffect(() => {
+    let timeoutId = handleSearch(search, dispatch);
+    if (search.length === 0) {
+      dispatch(getRestrauntSuccess([]));
+    }
+    return () => {
+      console.log("cleanup done for search");
+      clearTimeout(timeoutId);
+    };
+  }, [search, dispatch]);
   return (
     <Flex alignItems={"center"} color={"black"} pt={"10px"} pb={"5px"}>
       <Flex
@@ -143,22 +166,57 @@ const DeleveryNavbar = () => {
           </Menu>
           <Divider orientation="vertical" p={"2"} h={"20px"} />
 
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              {<SearchIcon color="gray.300" />}
-            </InputLeftElement>
-            <Input
-              borderLeftRadius={"0"}
-              variant={"filled"}
-              type="tel"
-              placeholder="search for restaurant, cuisine or a dish"
-              bgColor={"white"}
-              _hover={{ bgColor: "white" }}
-              _focus={{ bgColor: "white" }}
-              border={"none"}
-              color={"black"}
-            />
-          </InputGroup>
+          <Box>
+            <InputGroup position={"relative"}>
+              <InputLeftElement pointerEvents="none">
+                {<SearchIcon color="gray.300" />}
+              </InputLeftElement>
+              <Input
+                borderLeftRadius={"0"}
+                variant={"filled"}
+                type="tel"
+                placeholder="search for restaurant, cuisine or a dish"
+                bgColor={"white"}
+                _hover={{ bgColor: "white" }}
+                _focus={{ bgColor: "white" }}
+                border={"none"}
+                color={"black"}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </InputGroup>
+            {restraunts.length > 0 && (
+              <Box
+                position={"absolute"}
+                bgColor={"white"}
+                w={"455px"}
+                maxH={"300px"}
+                h={"fit-content"}
+                overflow={"auto"}
+                zIndex={9}
+                p={"10px"}
+              >
+                {restraunts?.map((item, i) => {
+                  return (
+                    <Text
+                      zIndex={9}
+                      key={i}
+                      color={"black"}
+                      mb={"10px"}
+                      cursor={"pointer"}
+                      onClick={() => {
+                        router.push(
+                          `/${item.restaurant.location.city}/order/${item.restaurant.R.res_id}`
+                        );
+                      }}
+                    >
+                      {item.restaurant.name} ,
+                      <span>{item.restaurant.location.city}</span>
+                    </Text>
+                  );
+                })}
+              </Box>
+            )}
+          </Box>
         </Flex>
         <Show above="lg">
           {!user ? (

@@ -10,8 +10,10 @@ import {
 import Image from "next/image";
 import React from "react";
 import { AiOutlineHeart } from "react-icons/ai";
+import { useSelector } from "react-redux";
 
 const Details = ({ handleStep, name, price, description, imgURL }) => {
+  const { user } = useSelector((state) => state.userReducer);
   return (
     <ModalBody>
       <Box
@@ -43,8 +45,9 @@ const Details = ({ handleStep, name, price, description, imgURL }) => {
           onClick={() => {
             handleStep("address");
           }}
+          isDisabled={!user}
         >
-          Order Now
+          {user ? "Order Now" : "Login/signup to order"}
         </Button>
         <IconButton
           bgColor={"white"}
