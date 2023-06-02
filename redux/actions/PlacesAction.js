@@ -66,7 +66,8 @@ export const getRestraunts = async (dispatch, controller, place, page) => {
     }
 }
 
-export const FilterRestaurants = async (term, dispatch, place) => {
+export const FilterRestaurants = async (term, dispatch, place, sort) => {
+    dispatch(activateFilter(term))
     dispatch(startLoading())
     try {
         const res = await axios.get(`https://developers.zomato.com/api/v2.1/locations?query=${place}`, {
@@ -82,11 +83,13 @@ export const FilterRestaurants = async (term, dispatch, place) => {
                     headers: {
                         "user-key": process.env.NEXT_PUBLIC_ZOMATO_USER_KEY,
                     },
+                    params: {
+                        sort: sort
+                    }
                 })
                 const { data } = res
                 if (data) {
                     dispatch(getRestrauntSuccess(data.restaurants))
-                    dispatch(activateFilter(term))
                 }
             } catch (error) {
                 console.log(error)
@@ -226,3 +229,43 @@ export const searchReq = async (dispatch) => {
         console.log(error)
     }
 }
+
+// export const FilterCuisine = async (dispatch, place, cuisines, sort) => {
+//     dispatch(startLoading())
+//     try {
+//         const res = await axios.get(`https://developers.zomato.com/api/v2.1/locations?query=${place}`, {
+//             headers: {
+//                 "user-key": process.env.NEXT_PUBLIC_ZOMATO_USER_KEY,
+//             },
+//         })
+//         const { data } = res
+//         if (data) {
+//             const { entity_id, entity_type, latitude, longitude } = data.location_suggestions[0]
+//             try {
+//                 let finalData = []
+
+//                 for (const cuisine of cuisines) {
+//                     const res = await axios.get(
+//                         `https://developers.zomato.com/api/v2.1/search?entity_id=${entity_id}&entity_type=${entity_type}&q=${cuisine}&lat=${latitude}&lon=${longitude}&start=0&count=18&sort=${sort}`,
+//                         {
+//                             headers: {
+//                                 "user-key": process.env.NEXT_PUBLIC_ZOMATO_USER_KEY,
+//                             },
+//                         }
+//                     );
+//                     const { data } = res;
+//                     if (data) {
+//                         finalData = [...finalData, ...data.restaurants]
+//                     }
+//                 }
+//                 if (finalData.length) {
+//                     dispatch(getRestrauntSuccess(finalData));
+//                 }
+//             } catch (error) {
+//                 console.log(error)
+//             }
+//         }
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }

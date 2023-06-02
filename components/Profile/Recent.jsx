@@ -13,6 +13,8 @@ const Recent = () => {
       justifyContent={"left"}
       gap={"20px"}
       h={"fit-content"}
+      overflow={"auto"}
+      maxH={"900px"}
     >
       {user?.recent?.length <= 0 ? (
         <EmptyContainer

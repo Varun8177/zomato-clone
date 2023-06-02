@@ -26,6 +26,8 @@ const Bookmarks = () => {
       justifyContent={"left"}
       gap={"20px"}
       h={"fit-content"}
+      overflow={"auto"}
+      maxH={"900px"}
     >
       {user?.bookmarks?.length <= 0 ? (
         <EmptyContainer

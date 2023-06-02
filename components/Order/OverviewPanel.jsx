@@ -1,15 +1,5 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Heading,
-  IconButton,
-  Text,
-} from "@chakra-ui/react";
-import Image from "next/image";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { FcOk } from "react-icons/fc";
 import Advertisement from "./orderPanel/Advertisement";
 import MoreInfo from "./orderPanel/MoreInfo";
 import Cuisines from "./orderPanel/Cuisines";
