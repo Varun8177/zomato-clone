@@ -176,30 +176,6 @@ export const getCollections = async (dispatch, controller, place) => {
     }
 };
 
-export const autoCompleteSearch = async (query) => {
-    try {
-        const response = await axios.get(
-            'https://developers.zomato.com/api/v2.1/autocomplete',
-            {
-                headers: {
-                    'user-key': process.env.NEXT_PUBLIC_ZOMATO_USER_KEY,
-                },
-                params: {
-                    q: query,
-                },
-            }
-        );
-
-        const { restaurants, locations, cuisines } = response.data;
-
-        console.log('Restaurant Suggestions:', restaurants);
-        console.log('Location Suggestions:', locations);
-        console.log('Cuisine Suggestions:', cuisines);
-    } catch (error) {
-        console.log(error);
-    }
-};
-
 export const FetchMealsReq = async (dispatch) => {
     try {
         const res = await axios.get('https://www.themealdb.com/api/json/v1/1/categories.php')

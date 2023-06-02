@@ -8,7 +8,6 @@ const Banner = () => {
 
   return (
     <Flex
-      border={"1px solid"}
       w={{ base: "90%", md: "70%" }}
       alignItems={"center"}
       m={"auto"}
