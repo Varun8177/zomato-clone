@@ -1,7 +1,7 @@
 import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
 import { AddAddressSuccess, AddBookmarkSuccess, AddOrderSuccess, AddRecentSuccess, RemoveBoookmarkSuccess, getUserDataSuccess } from "../slices/UserSlice"
 import { Auth, db } from "@/firebase/firebase.config";
-import { arrayRemove, arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
 
 
 export const VerifyUser = async (dispatch) => {
@@ -71,6 +71,25 @@ export const getInitalUser = async (id, dispatch) => {
         console.log(res.data())
     } catch (error) {
         console.log(error)
+    }
+}
+
+export const getMobileInitialUser = async (dispatch, user) => {
+    const q = query(
+        collection(db, "users"),
+        where("phoneNumber", "==", user.phoneNumber.substring(3))
+    );
+    try {
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.size < 1) {
+            console.log(querySnapshot.empty());
+        } else {
+            querySnapshot.forEach((doc) => {
+                dispatch(getUserDataSuccess(doc.data()));
+            });
+        }
+    } catch (error) {
+        console.log(error);
     }
 }
 

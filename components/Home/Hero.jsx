@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
+  Center,
   Flex,
   Heading,
   Input,
@@ -11,6 +12,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
@@ -24,6 +26,7 @@ import {
 import { useRouter } from "next/router";
 import {
   getPlace,
+  getSearchSuccess,
   getSuggestionSuccess,
   startLocationLoading,
 } from "@/redux/slices/PlacesSlice";
@@ -34,7 +37,7 @@ const Hero = () => {
   const dispatch = useDispatch();
   const [text, setText] = useState("");
   const [search, setSearch] = useState("");
-  const { place, suggestions, locationLoad, restraunts } = useSelector(
+  const { place, suggestions, locationLoad, searchResults } = useSelector(
     (state) => state.placeReducer
   );
   useEffect(() => {
@@ -60,7 +63,6 @@ const Hero = () => {
       });
     }
   };
-  console.log(restraunts);
 
   const handleChange = (text, dispatch) => {
     const timeout = setTimeout(() => {
@@ -76,7 +78,7 @@ const Hero = () => {
       if (search.length > 0) {
         searchReq(dispatch, search, place);
       }
-    }, 600);
+    }, 300);
     return timeout;
   };
 
@@ -92,11 +94,12 @@ const Hero = () => {
   useEffect(() => {
     let timeoutId = handleSearch(search, dispatch);
     if (search.length === 0) {
-      dispatch(getRestrauntSuccess([]));
+      dispatch(getSearchSuccess([]));
     }
     return () => {
       console.log("cleanup done for search");
       clearTimeout(timeoutId);
+      dispatch(getSearchSuccess([]));
     };
   }, [search, dispatch]);
 
@@ -107,6 +110,7 @@ const Hero = () => {
       alignItems={"center"}
       justify={"center"}
       color={"white"}
+      onClick={() => dispatch(getSearchSuccess([]))}
     >
       <Heading fontSize={"7xl"}>zomato</Heading>
       <Heading
@@ -212,10 +216,37 @@ const Hero = () => {
               _focus={{ bgColor: "white" }}
               border={"none"}
               color={"black"}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value.length < 1) {
+                  dispatch(getSearchSuccess([]));
+                } else {
+                  setSearch(e.target.value);
+                }
+              }}
             />
           </InputGroup>
-          {restraunts.length > 0 && (
+          {!searchResults.length && search.length > 1 && (
+            <Center
+              position={"absolute"}
+              bgColor={"white"}
+              // w={"455px"}
+              w={"101%"}
+              maxH={"300px"}
+              h={"fit-content"}
+              overflow={"auto"}
+              zIndex={9}
+              p={"10px"}
+            >
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="blue.500"
+                size="xl"
+              />
+            </Center>
+          )}
+          {searchResults.length > 0 && (
             <Box
               position={"absolute"}
               bgColor={"white"}
@@ -227,7 +258,7 @@ const Hero = () => {
               zIndex={9}
               p={"10px"}
             >
-              {restraunts?.map((item, i) => {
+              {searchResults?.map((item, i) => {
                 return (
                   <Text
                     zIndex={9}
