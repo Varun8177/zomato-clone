@@ -12,7 +12,8 @@ const placesSlice = createSlice({
         ActiveFilters: [],
         dineoutData: [],
         collections: [],
-        meals: []
+        meals: [],
+        searchResults: []
     },
     reducers: {
         startLoading: (state) => {
@@ -56,9 +57,12 @@ const placesSlice = createSlice({
         },
         getMealsSuccess: (state, action) => {
             state.meals = action.payload
+        },
+        getSearchSuccess: (state, action) => {
+            state.searchResults = action.payload
         }
     }
 })
 
-export const { getMealsSuccess, getPlace, getRestrauntSuccess, getSuggestionSuccess, getRestruntDetails, activateFilter, getDineOutSuccess, getCollectionSuccess, startLoading, removeFilter, startLocationLoading } = placesSlice.actions
+export const { getSearchSuccess, getMealsSuccess, getPlace, getRestrauntSuccess, getSuggestionSuccess, getRestruntDetails, activateFilter, getDineOutSuccess, getCollectionSuccess, startLoading, removeFilter, startLocationLoading } = placesSlice.actions
 export default placesSlice.reducer

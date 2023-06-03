@@ -13,12 +13,16 @@ import React, { useEffect } from "react";
 import LoginModal from "./Navbar/LoginModal";
 import SignupModal from "./Navbar/SignupModal";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { Auth } from "@/firebase/firebase.config";
+import { Auth, db } from "@/firebase/firebase.config";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { getInitalUser } from "@/redux/actions/UserAction";
+import {
+  getInitalUser,
+  getMobileInitialUser,
+} from "@/redux/actions/UserAction";
 import { getUserDataSuccess } from "@/redux/slices/UserSlice";
+import { collection, query, where } from "firebase/firestore";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.userReducer);
@@ -33,7 +37,11 @@ const Navbar = () => {
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(Auth, (user) => {
       if (user) {
-        getInitalUser(user.uid, dispatch);
+        if (user.providerData[0].providerId == "phone") {
+          getMobileInitialUser(dispatch, user);
+        } else {
+          getInitalUser(user.uid, dispatch);
+        }
       } else {
         dispatch(getUserDataSuccess(null));
       }

@@ -3,6 +3,7 @@ import {
   Avatar,
   Box,
   Button,
+  Center,
   Divider,
   Flex,
   Heading,
@@ -15,6 +16,7 @@ import {
   MenuItem,
   MenuList,
   Show,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, HamburgerIcon, SearchIcon } from "@chakra-ui/icons";
@@ -24,15 +26,22 @@ import SignupModal from "./SignupModal";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { getPlace, getRestrauntSuccess } from "@/redux/slices/PlacesSlice";
+import {
+  getPlace,
+  getRestrauntSuccess,
+  getSearchSuccess,
+} from "@/redux/slices/PlacesSlice";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { Auth } from "@/firebase/firebase.config";
 import { getUserDataSuccess } from "@/redux/slices/UserSlice";
-import { getInitalUser } from "@/redux/actions/UserAction";
+import {
+  getInitalUser,
+  getMobileInitialUser,
+} from "@/redux/actions/UserAction";
 import { searchReq } from "@/redux/actions/PlacesAction";
 
 const DeleveryNavbar = () => {
-  const { place, restraunts } = useSelector((state) => state.placeReducer);
+  const { place, searchResults } = useSelector((state) => state.placeReducer);
   const { user } = useSelector((store) => store.userReducer);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -69,7 +78,11 @@ const DeleveryNavbar = () => {
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(Auth, (user) => {
       if (user) {
-        getInitalUser(user.uid, dispatch);
+        if (user.providerData[0].providerId == "phone") {
+          getMobileInitialUser(dispatch, user);
+        } else {
+          getInitalUser(user.uid, dispatch);
+        }
       } else {
         dispatch(getUserDataSuccess(null));
       }
@@ -84,22 +97,29 @@ const DeleveryNavbar = () => {
       if (search.length > 0) {
         searchReq(dispatch, search, place);
       }
-    }, 600);
+    }, 400);
     return timeout;
   };
 
   useEffect(() => {
     let timeoutId = handleSearch(search, dispatch);
-    if (search.length === 0) {
+    if (search.length <= 1) {
       dispatch(getRestrauntSuccess([]));
     }
     return () => {
       console.log("cleanup done for search");
       clearTimeout(timeoutId);
+      dispatch(getSearchSuccess([]));
     };
   }, [search, dispatch]);
   return (
-    <Flex alignItems={"center"} color={"black"} pt={"10px"} pb={"5px"}>
+    <Flex
+      alignItems={"center"}
+      color={"black"}
+      pt={"10px"}
+      pb={"5px"}
+      onClick={() => dispatch(getSearchSuccess([]))}
+    >
       <Flex
         w={{
           base: "90%",
@@ -166,23 +186,85 @@ const DeleveryNavbar = () => {
           </Menu>
           <Divider orientation="vertical" p={"2"} h={"20px"} />
 
-          <InputGroup position={"relative"}>
-            <InputLeftElement pointerEvents="none">
-              {<SearchIcon color="gray.300" />}
-            </InputLeftElement>
-            <Input
-              borderLeftRadius={"0"}
-              variant={"filled"}
-              type="tel"
-              placeholder="search for restaurant, cuisine or a dish"
-              bgColor={"white"}
-              _hover={{ bgColor: "white" }}
-              _focus={{ bgColor: "white" }}
-              border={"none"}
-              color={"black"}
-              // onChange={(e) => setSearch(e.target.value)}
-            />
-          </InputGroup>
+          <Box w={"100%"} position={"relative"}>
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                {<SearchIcon color="gray.300" />}
+              </InputLeftElement>
+              <Input
+                borderLeftRadius={"0"}
+                variant={"filled"}
+                type="tel"
+                placeholder="search for restaurant, cuisine or a dish"
+                bgColor={"white"}
+                _hover={{ bgColor: "white" }}
+                _focus={{ bgColor: "white" }}
+                border={"none"}
+                color={"black"}
+                onChange={(e) => {
+                  if (e.target.value.length < 1) {
+                    dispatch(getSearchSuccess([]));
+                  } else {
+                    setSearch(e.target.value);
+                  }
+                }}
+              />
+            </InputGroup>
+            {!searchResults.length && search.length > 1 && (
+              <Center
+                position={"absolute"}
+                bgColor={"white"}
+                // w={"455px"}
+                w={"101%"}
+                maxH={"300px"}
+                h={"fit-content"}
+                overflow={"auto"}
+                zIndex={9}
+                p={"10px"}
+              >
+                <Spinner
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="gray.200"
+                  color="blue.500"
+                  size="xl"
+                />
+              </Center>
+            )}
+            {searchResults.length > 0 && (
+              <Box
+                position={"absolute"}
+                bgColor={"white"}
+                // w={"455px"}
+                w={"102%"}
+                maxH={"300px"}
+                h={"fit-content"}
+                overflow={"auto"}
+                zIndex={9}
+                p={"10px"}
+              >
+                {searchResults?.map((item, i) => {
+                  return (
+                    <Text
+                      zIndex={9}
+                      key={i}
+                      color={"black"}
+                      mb={"10px"}
+                      cursor={"pointer"}
+                      onClick={() => {
+                        router.push(
+                          `/${item.restaurant.location.city}/order/${item.restaurant.R.res_id}`
+                        );
+                      }}
+                    >
+                      {item.restaurant.name} ,
+                      <span>{item.restaurant.location.city}</span>
+                    </Text>
+                  );
+                })}
+              </Box>
+            )}
+          </Box>
         </Flex>
         <Show above="lg">
           {!user ? (

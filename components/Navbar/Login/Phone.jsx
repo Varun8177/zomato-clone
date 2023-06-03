@@ -40,6 +40,7 @@ const PhoneComponent = () => {
         {
           size: "invisible",
           callback: (response) => {
+            console.log(response);
             onSignup();
           },
           "expired-callback": () => {},
@@ -60,7 +61,6 @@ const PhoneComponent = () => {
     signInWithPhoneNumber(Auth, formatPh, appVerifier)
       .then((confirmationResult) => {
         setConformation(confirmationResult);
-        console.log(confirmationResult);
         customToast(
           "info",
           "OTP sended successfully!",
@@ -77,11 +77,10 @@ const PhoneComponent = () => {
 
   const onOTPVerify = async (e) => {
     e.preventDefault();
-    console.log(OTP);
     setLoad(true);
     try {
       const res = await confirmation.confirm(OTP);
-      dispatch(getUserDataSuccess(userData));
+      dispatch(getUserDataSuccess(res.user));
       customToast("success", "successfully logged in", "");
       setLoad(false);
     } catch (error) {
@@ -97,6 +96,7 @@ const PhoneComponent = () => {
     try {
       const querySnapshot = await getDocs(q);
       if (querySnapshot.size < 1) {
+        console.log(querySnapshot.empty());
         customToast("error", "No user found", "please signup first");
       } else {
         querySnapshot.forEach((doc) => {
