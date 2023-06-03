@@ -10,7 +10,6 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
