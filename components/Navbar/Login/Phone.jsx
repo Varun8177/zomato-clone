@@ -20,6 +20,7 @@ const PhoneComponent = () => {
   const [ShowOtp, setShowOtp] = useState(false);
   const [confirmation, setConformation] = useState("");
   const [OTP, setOTP] = useState("");
+  const [userData, setUserData] = useState({});
   const toast = useToast();
   const customToast = (status, title, description) => {
     toast.closeAll();
@@ -48,8 +49,7 @@ const PhoneComponent = () => {
     }
   }
 
-  const onSignup = (e) => {
-    e.preventDefault();
+  const onSignup = () => {
     setLoad(true);
     onCaptchVerify();
 
@@ -81,7 +81,7 @@ const PhoneComponent = () => {
     setLoad(true);
     try {
       const res = await confirmation.confirm(OTP);
-      dispatch(getUserDataSuccess(res.user));
+      dispatch(getUserDataSuccess(userData));
       customToast("success", "successfully logged in", "");
       setLoad(false);
     } catch (error) {
@@ -92,18 +92,25 @@ const PhoneComponent = () => {
 
   const handleSearch = async (e, phone) => {
     e.preventDefault();
+    setLoad(true);
     const q = query(collection(db, "users"), where("phoneNumber", "==", phone));
     try {
       const querySnapshot = await getDocs(q);
       if (querySnapshot.size < 1) {
         customToast("error", "No user found", "please signup first");
       } else {
+        querySnapshot.forEach((doc) => {
+          setUserData(doc.data());
+        });
         onSignup();
       }
+      setLoad(false);
     } catch (error) {
       console.log(error);
+      setLoad(false);
     }
   };
+
   return (
     <>
       <div id="recaptcha-container"></div>
