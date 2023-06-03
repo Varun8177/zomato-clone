@@ -70,20 +70,20 @@ npm run start
 
 ### Home Page
 
-![homepage](https://github.com/Varun8177/zomato-clone/assets/112754116/8d9a8cb0-5cf5-4435-b38f-a79f66d6f60b)
+![homepage](https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/readme%2Fhome.jpg?alt=media&token=f15901c2-4858-411c-afb0-04ace2a34431)
 
 ### Restraunts page
 
-![restraunts1](https://github.com/Varun8177/zomato-clone/assets/112754116/42ea0c12-4b72-454e-bf15-ea90e5ff867f)
-![restraunts2](https://github.com/Varun8177/zomato-clone/assets/112754116/cdc87e7d-413e-4358-8738-e1790fa9ba27)
+![restraunts1](https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/readme%2Fres1.jpg?alt=media&token=e1591a64-f25c-4f12-b691-1281ec2b3484)
+![restraunts2](https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/readme%2Fres2.jpg?alt=media&token=eb17658e-3966-4e4e-8459-4b27a2201dc9)
 
 ### Restraunt Details page
 
-![details](https://github.com/Varun8177/zomato-clone/assets/112754116/beac6fd9-7f69-4868-85f5-aa8231c0ebd3)
+![details](https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/readme%2Fsingle.jpg?alt=media&token=910da63c-1041-43f9-bd15-653f0d2c044c)
 
 ### User Dashboard or profile page
 
-![profile](https://github.com/Varun8177/zomato-clone/assets/112754116/f3cb3c97-1760-478e-a8e5-af1e80755245)
+![profile](https://firebasestorage.googleapis.com/v0/b/zomato-clone-c4414.appspot.com/o/readme%2Fprofile1.jpg?alt=media&token=d94a4802-a39e-4aeb-a37a-fd5e5749f34b)
 
 ## Made by
 
