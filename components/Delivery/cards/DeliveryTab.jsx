@@ -59,9 +59,6 @@ const DeliveryTab = () => {
           >
             Pure Veg
           </MenuButton>
-          <MenuList>
-            <MenuItem>Download</MenuItem>
-          </MenuList>
         </Menu>
         <Menu>
           <MenuButton
@@ -72,9 +69,6 @@ const DeliveryTab = () => {
           >
             Cuisines
           </MenuButton>
-          <MenuList>
-            <MenuItem>Download</MenuItem>
-          </MenuList>
         </Menu>
       </Flex>
     </TabPanel>
