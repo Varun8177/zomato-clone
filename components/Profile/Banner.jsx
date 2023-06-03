@@ -2,6 +2,7 @@ import { Avatar, Box, Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { useSelector } from "react-redux";
 import { FiEdit } from "react-icons/fi";
+import EditModal from "./EditModal";
 
 const Banner = () => {
   const { user } = useSelector((store) => store.userReducer);
@@ -32,15 +33,7 @@ const Banner = () => {
           </Text>
         </Flex>
         <Box textAlign={"right"}>
-          <Button
-            leftIcon={<FiEdit />}
-            bgColor={"red.400"}
-            color={"white"}
-            mb={"20px"}
-            _hover={{ bgColor: "red.500" }}
-          >
-            Edit Profile
-          </Button>
+          <EditModal />
           <Flex alignItems={"center"} gap={"20px"}>
             {new Array(3).fill(0).map((item, i) => {
               return (

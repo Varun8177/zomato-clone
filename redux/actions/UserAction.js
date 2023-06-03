@@ -6,7 +6,9 @@ import { arrayRemove, arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebas
 
 export const VerifyUser = async (dispatch) => {
     try {
-        const res = await signInWithPopup(Auth, new GoogleAuthProvider())
+        const res = await signInWithPopup(Auth, new GoogleAuthProvider().setCustomParameters({
+            prompt: "select_account"
+        }))
         const { user } = res;
         if (user) {
             const check = await getDoc(doc(db, "users", user.uid));
@@ -15,7 +17,9 @@ export const VerifyUser = async (dispatch) => {
                 dispatch(getUserDataSuccess(user))
             } else {
                 await updateDoc(doc(db, "users", user.uid), { displayName: user.displayName, email: user.email, photoURL: user.photoURL });
-                dispatch(getUserDataSuccess({ ...check.data(), displayName: user.displayName, email: user.email, photoURL: user.photoURL }))
+                if (!check.data().photoURL) {
+                    dispatch(getUserDataSuccess({ ...check.data(), photoURL: user.photoURL }))
+                }
             }
         }
     } catch (error) {
@@ -133,6 +137,17 @@ export const AddOrderReq = async (id, add, dispatch, handleSuccess) => {
             dispatch(AddOrderSuccess(add))
             handleSuccess()
         }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const UpdateUserDetails = async (dispatch, details, id, Done) => {
+    try {
+        await updateDoc(doc(db, "users", id), details);
+        const res = await getDoc(doc(db, "users", id));
+        dispatch(getUserDataSuccess(res.data()))
+        Done()
     } catch (error) {
         console.log(error)
     }
