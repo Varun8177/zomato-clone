@@ -1,4 +1,3 @@
-import { Auth } from "@/firebase/firebase.config";
 import { VerifyEmail } from "@/redux/actions/UserAction";
 import { Button, Input, useToast } from "@chakra-ui/react";
 import React, { useState } from "react";

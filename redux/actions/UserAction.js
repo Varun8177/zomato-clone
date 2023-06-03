@@ -14,7 +14,8 @@ export const VerifyUser = async (dispatch) => {
                 await setDoc(doc(db, "users", user.uid), { address: [], bookmarks: [], recent: [], orders: [], uid: user.uid, displayName: user.displayName, phoneNumber: user.phoneNumber, email: user.email, photoURL: user.photoURL });
                 dispatch(getUserDataSuccess(user))
             } else {
-                dispatch(getUserDataSuccess(check.data()))
+                await updateDoc(doc(db, "users", user.uid), { displayName: user.displayName, email: user.email, photoURL: user.photoURL });
+                dispatch(getUserDataSuccess({ ...check.data(), displayName: user.displayName, email: user.email, photoURL: user.photoURL }))
             }
         }
     } catch (error) {
